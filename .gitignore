@@ -85,4 +85,5 @@ public
 .tern-port
 
 dist
-out
+
+package-lock.json

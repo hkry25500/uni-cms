@@ -14,11 +14,27 @@ export interface INodeCacheObject
 
 export interface IConfigIMDb
 {
-    name: string
     id: string
+    type: number
+    title: string
+    category: string
+    rating: number
+    classification: string
+    interests: string[]
     description: string
-    director: string
+    casts: any[]
+    director: string[]
     writers: string[]
-    poster: { source: string, url: string }
-    sources: { internal: {url: string}, external: {url:string} }
+    poster: { source?: string; url: string; }
+    source: { url: string; }
+    stream: { mp4: { url: string; } }
+    tracks: ITrackConfig[]
+}
+
+export interface ITrackConfig {
+    kind: string
+    src: string
+    srcLang: string
+    label: string
+    default?: boolean
 }

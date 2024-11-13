@@ -4,7 +4,9 @@
   "description": "A placeholder description",
   "main": "src/server.js",
   "scripts": {
-    "dev": "tsc && node ./out/server.js"
+    "dev": "tsc && node ./dist/server.js",
+    "build": "tsc",
+    "start": "node ./dist/server.js"
   },
   "author": "Benjamin Dogg",
   "license": "ISC",
@@ -13,6 +15,7 @@
     "express": "^4.21.1"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/fluent-ffmpeg": "^2.1.26",
     "@types/fs-extra": "^11.0.4",
