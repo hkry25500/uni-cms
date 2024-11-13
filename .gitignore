@@ -86,3 +86,4 @@ public
 
 dist
 out
+package-lock.json

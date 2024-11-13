@@ -14,7 +14,7 @@ const port = process.env.HOST_PORT || 8080;
 
 // 中间件
 // app.use(securityMiddleware);
-app.use(cors())
+app.use(cors({ origin: '*', optionsSuccessStatus: 200 }));
 // app.use(cacheMiddleware);
 
 // 路由
@@ -22,5 +22,4 @@ app.use('/', router);
 
 app.listen(port as number, address, () => {
     console.log(`CDN server is running on port ${port}`);
-    
 })

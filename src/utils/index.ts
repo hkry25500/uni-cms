@@ -1,5 +1,6 @@
 import fs, { existsSync } from 'fs-extra'
 import path from 'path';
+import { IConfigIMDb } from '../shared/interfaces';
 
 
 export function getDirectories(srcPath: string)
@@ -43,4 +44,28 @@ export function isStreamFileAvailable(filePath: string): boolean
         console.error('Error reading file:', err);
         return false;
     }
+}
+
+export function getBaseURL(): string
+{
+    return `${process.env.HOST_PROTOCOL}://${process.env.HOST_ADDR}:${process.env.HOST_PORT}`;
+}
+
+export function processIMDbConfig(imdb_config: IConfigIMDb)
+{
+    const basrUrl = getBaseURL();
+    const imdbID = imdb_config.id;
+
+    // 替换 imdb 配置文件中的 相对路径 到 完整请求路径
+    imdb_config.source.url = `${basrUrl}/movie/${imdbID}/source`;
+    imdb_config.stream.mp4.url = `${basrUrl}/movie/${imdbID}/stream/stream.mp4`;
+    // imdb_config.stream.hls.url = `${basrUrl}/movie/${imdbID}/stream/stream.m3u8`;
+
+    if (imdb_config.poster.source === 'internal')
+    {
+        imdb_config.poster.url = `${basrUrl}/movie/${imdbID}/poster`;
+    }
+    delete imdb_config.poster.source;
+
+    return imdb_config;
 }
