@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express from "express";
-import { cacheMiddleware } from "./middlewares/cache.js";
 import cors from 'cors'
 import router from "./routes/serve.js";
 
