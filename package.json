@@ -4,15 +4,9 @@
   "description": "A placeholder description",
   "main": "src/server.js",
   "scripts": {
-<<<<<<< HEAD
     "dev": "tsc && node ./dist/server.js",
     "build": "tsc",
     "start": "node ./dist/server.js"
-=======
-    "dev": "tsc && node ./out/server.js",
-    "build": "tsc",
-    "start": "node ./out/server.js"
->>>>>>> 73c1c7f7a1fd44c26c0c4865207c1ce189abe1b3
   },
   "author": "Benjamin Dogg",
   "license": "ISC",
