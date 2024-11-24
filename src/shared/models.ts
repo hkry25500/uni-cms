@@ -16,7 +16,7 @@ export class IMDbConfiguration implements IConfigIMDb
     writers: string[]
     poster: { source?: string; url: string; }
     source: { url: string; }
-    stream: { mp4: { url: string; }; }
+    stream: { url: string; }
     tracks: ITrackConfig[]
 
     constructor (
@@ -32,8 +32,8 @@ export class IMDbConfiguration implements IConfigIMDb
         director: string[],
         writers: string[],
         poster: { source?: string; url: string; },
-        source: { url: string },
-        stream: { mp4: { url: string }; },
+        source: { url: string; },
+        stream: { url: string; },
         tracks: ITrackConfig[]
     ) {
         this.id = id;

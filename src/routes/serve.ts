@@ -88,9 +88,10 @@ router.get('/movie/:imdbid/source', (req: Request, res: Response) =>
     });
 });
 
-router.get('/movie/:imdbid/stream/:hlsfile', (req: Request, res: Response) =>
+router.get('/movie/:imdbid/stream/:file?', (req: Request, res: Response) =>
 {
-    const { imdbid: imdbID, hlsfile } = req.params;
+    const { imdbid: imdbID } = req.params;
+    const file = req.params.file as string || '720p.mp4';
     const resolution = req.query.resolution as string || '720p';
 
     const movieDirPath = path.join(moviesDirPath, imdbID);
@@ -102,7 +103,7 @@ router.get('/movie/:imdbid/stream/:hlsfile', (req: Request, res: Response) =>
             return res.status(500).send();
         }
 
-        switch (hlsfile.split('.').pop())
+        switch (file.split('.').pop())
         {
             case 'm3u8':
                 {
@@ -184,7 +185,7 @@ router.get('/movie/:imdbid/stream/:hlsfile', (req: Request, res: Response) =>
 
             case 'ts':
                 {
-                    const segmentPath = path.join(movieDirPath, resolution, hlsfile);
+                    const segmentPath = path.join(movieDirPath, resolution, file);
                     console.log(segmentPath);
 
                     if (!existsSync(segmentPath)) {
@@ -200,8 +201,7 @@ router.get('/movie/:imdbid/stream/:hlsfile', (req: Request, res: Response) =>
                 {
                     const range = req.headers.range || "0";
 
-                    const movieSourcePath = imdb_config.source.url;
-                    const filePath = path.join(movieDirPath, movieSourcePath);
+                    const filePath = path.join(movieDirPath, "stream", file);
 
                     const videoSize = statSync(filePath).size;
 
@@ -221,41 +221,6 @@ router.get('/movie/:imdbid/stream/:hlsfile', (req: Request, res: Response) =>
 
                     const videoStream = createReadStream(filePath, { start, end });
                     videoStream.pipe(res);
-                    // {
-                    //     if (err) {
-                    //         console.error('An error occurred: ' + err.message);
-                    //         return res.status(500).send('Error processing video metadata');
-                    //     }
-
-                    //     const duration = metadata.format.duration;
-
-                    //     // 设置响应头以传递元数据信息
-                    //     res.set({
-                    //       'Content-Type': 'video/mp4',
-                    //       'X-Video-Duration': duration,
-                    //     });
-
-                    //     // 使用 fluent-ffmpeg 进行视频处理并流传输
-                    //     const task = ffmpeg(filePath)
-                    //     .outputOptions([
-                    //         '-movflags empty_moov'
-                    //     ])
-                    //     .videoCodec('libx264') // 使用 h264 编码
-                    //     .format('mp4')
-                    //     .size(size) // 设置分辨率
-                    //     .on('error', (err) => {
-                    //         console.error('An error occurred: ' + err.message);
-                    //         if (!res.headersSent)
-                    //             res.status(500).send('Error processing video');
-                    //     })
-                    //     .on('end', () => {
-                    //         console.log('Processing finished!');
-                    //         if (!res.headersSent)
-                    //             res.status(200).end();
-                    //     });
-                    //     task.pipe(res, { end: true });
-
-                    // });
                 }
                 break;
 

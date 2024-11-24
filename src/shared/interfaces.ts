@@ -27,7 +27,7 @@ export interface IConfigIMDb
     writers: string[]
     poster: { source?: string; url: string; }
     source: { url: string; }
-    stream: { mp4: { url: string; } }
+    stream: { url: string; }
     tracks: ITrackConfig[]
 }
 

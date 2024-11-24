@@ -58,8 +58,7 @@ export function processIMDbConfig(imdb_config: IConfigIMDb)
 
     // 替换 imdb 配置文件中的 相对路径 到 完整请求路径
     imdb_config.source.url = `${baseURL}/movie/${imdbID}/source`;
-    imdb_config.stream.mp4.url = `${baseURL}/movie/${imdbID}/stream/stream.mp4`;
-    // imdb_config.stream.hls.url = `${basrUrl}/movie/${imdbID}/stream/stream.m3u8`;
+    imdb_config.stream.url = `${baseURL}/movie/${imdbID}/stream`;
 
     if (imdb_config.poster.source === 'internal')
     {
