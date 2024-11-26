@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 import path from 'path';
-import { createReadStream, ensureDirSync, existsSync, readJson, readJSONSync, removeSync, statSync } from 'fs-extra';
+import { createReadStream, ensureDirSync, exists, existsSync, readJson, readJSONSync, removeSync, statSync } from 'fs-extra';
 import { homedir } from 'os';
 import axios from 'axios';
 import { getBaseURL, getDirectories, isStreamFileAvailable, processIMDbConfig } from '../utils';
@@ -202,6 +202,9 @@ router.get('/movie/:imdbid/stream/:file?', (req: Request, res: Response) =>
                     const range = req.headers.range || "0";
 
                     const filePath = path.join(movieDirPath, "stream", file);
+                    if (!existsSync(filePath)) {
+                        return res.status(500).send();
+                    }
 
                     const videoSize = statSync(filePath).size;
 
