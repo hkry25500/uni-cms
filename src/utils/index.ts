@@ -57,19 +57,19 @@ export function processIMDbConfig(imdb_config: IConfigIMDb)
     const imdbID = imdb_config.id;
 
     // 替换 imdb 配置文件中的 相对路径 到 完整请求路径
-    imdb_config.source.url = `${baseURL}/movie/${imdbID}/source`;
-    imdb_config.stream.url = `${baseURL}/movie/${imdbID}/stream`;
+    imdb_config.source.url = `${baseURL}/movies/${imdbID}/source`;
+    imdb_config.stream.url = `${baseURL}/movies/${imdbID}/stream`;
 
     if (imdb_config.poster.source === 'internal')
     {
-        imdb_config.poster.url = `${baseURL}/movie/${imdbID}/poster`;
+        imdb_config.poster.url = `${baseURL}/movies/${imdbID}/poster`;
     }
     delete imdb_config.poster.source;
 
     for (let track of imdb_config.tracks)
     {
         const filename = track.src;
-        const altFilepath = `${baseURL}/movie/${imdbID}/tracks/${filename}`;
+        const altFilepath = `${baseURL}/movies/${imdbID}/tracks/${filename}`;
         track.src = altFilepath;
     }
 

@@ -1,15 +1,14 @@
 import { Request, Response, Router } from 'express';
 import path from 'path';
-import { createReadStream, ensureDirSync, exists, existsSync, readJson, readJSONSync, removeSync, statSync } from 'fs-extra';
+import { createReadStream, ensureDirSync, existsSync, readJson, readJSONSync, removeSync, statSync } from 'fs-extra';
 import { homedir } from 'os';
 import axios from 'axios';
-import { getBaseURL, getDirectories, isStreamFileAvailable, processIMDbConfig } from '../utils';
-import ffmpeg from 'fluent-ffmpeg'
+import { getDirectories, isStreamFileAvailable, processIMDbConfig } from '../utils';
+import ffmpeg from 'fluent-ffmpeg';
 
 
 const router = Router();
 
-const baseUrl = getBaseURL()
 const folderPath = process.env.CONTENT_FOLDER_PATH || homedir();
 const moviesDirPath = path.join(folderPath, './movies');
 
@@ -46,7 +45,7 @@ router.get('/movies', (_req: Request, res: Response) =>
 
 let isInTask = false;
 
-router.get('/movie/:imdbid', (req: Request, res: Response) =>
+router.get('/movies/:imdbid', (req: Request, res: Response) =>
 {
     const imdbID = req.params.imdbid;
 
@@ -66,7 +65,7 @@ router.get('/movie/:imdbid', (req: Request, res: Response) =>
     });
 });
 
-router.get('/movie/:imdbid/source', (req: Request, res: Response) =>
+router.get('/movies/:imdbid/source', (req: Request, res: Response) =>
 {
     const { imdbid: imdbID } = req.params;
 
@@ -88,7 +87,7 @@ router.get('/movie/:imdbid/source', (req: Request, res: Response) =>
     });
 });
 
-router.get('/movie/:imdbid/stream/:file?', (req: Request, res: Response) =>
+router.get('/movies/:imdbid/stream/:file?', (req: Request, res: Response) =>
 {
     const { imdbid: imdbID } = req.params;
     const file = req.params.file as string || '720p.mp4';
@@ -208,7 +207,7 @@ router.get('/movie/:imdbid/stream/:file?', (req: Request, res: Response) =>
 
                     const videoSize = statSync(filePath).size;
 
-                    const CHUNK_SIZE = 10 ** 6;
+                    const CHUNK_SIZE = 10 ** 5;
                     const start = Number(range.replace(/\D/g, ""));
                     const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
                     const contentLength = end - start + 1;
@@ -233,7 +232,7 @@ router.get('/movie/:imdbid/stream/:file?', (req: Request, res: Response) =>
     });
 });
 
-router.get('/movie/:imdbid/poster', (req: Request, res: Response) =>
+router.get('/movies/:imdbid/poster', (req: Request, res: Response) =>
 {
     const { imdbid: imdbID } = req.params;
 
@@ -262,7 +261,7 @@ router.get('/movie/:imdbid/poster', (req: Request, res: Response) =>
     });
 });
 
-router.get('/movie/:imdbid/tracks/:filename', (req: Request, res: Response) =>
+router.get('/movies/:imdbid/tracks/:filename', (req: Request, res: Response) =>
 {
     const { imdbid: imdbID } = req.params;
     const filename = req.params.filename;
