@@ -6,22 +6,25 @@
         "name": "next"
       }
     ],
-    "target": "ES6", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */// "lib": [],                                        /* Specify a set of bundled library declaration files that describe the target runtime environment. */
-    "module": "commonjs", /* Specify what module code is generated. */// "rootDir": "./",                                  /* Specify the root folder within your source files. */
-    "resolveJsonModule": true,
-    "allowJs": true, /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */
-    "checkJs": false, /* Enable error reporting in type-checked JavaScript files. */// "maxNodeModuleJsDepth": 1,                        /* Specify the maximum folder depth used for checking JavaScript files from 'node_modules'. Only applicable with 'allowJs'. */
+    "target": "ES6",
+    "module": "CommonJS",
+    "allowJs": true,
+    "checkJs": false,
     "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"],
-      "@/lib/*": ["lib/*"]
+      "@/*": [
+        "./*"
+      ],
+      "@/lib/*": [
+        "lib/*"
+      ]
     },
-    "esModuleInterop": true, /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */// "preserveSymlinks": true,                         /* Disable resolving symlinks to their realpath. This correlates to the same flag in node. */
-    "forceConsistentCasingInFileNames": true, /* Ensure that casing is correct in imports. *//* Type Checking */
-    "strict": true, /* Enable all strict type-checking options. */
-    "noImplicitAny": false, /* Enable error reporting for expressions and declarations with an implied 'any' type. */
-    "strictNullChecks": true, /* When type checking, take into account 'null' and 'undefined'. */
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "strictNullChecks": true,
     "strictFunctionTypes": true,
     "noImplicitThis": true,
     "noUnusedLocals": false,
@@ -34,7 +37,8 @@
     "noEmit": false,
     "incremental": false,
     "moduleResolution": "node",
-    "isolatedModules": true
+    "isolatedModules": true,
+    "resolveJsonModule": true,
   },
   "include": [
     "next-env.d.ts",

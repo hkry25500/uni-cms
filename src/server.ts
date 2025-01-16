@@ -19,7 +19,7 @@ if (process.env.NO_WEBUI === 'true')
     server.use('/', router);
 
     server.listen(port as number, address, () => {
-        console.log(`CDN server is running on port ${port}`);
+        console.log(`CMS server is running on port ${port}`);
     });
 }
 else
@@ -39,7 +39,7 @@ else
         });
 
         server.listen(port as number, address, () => {
-            console.log(`CDN server is running on port ${port}`);
+            console.log(`CMS server is running on port ${port}`);
         });
     });
 }

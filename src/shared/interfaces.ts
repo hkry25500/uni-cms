@@ -15,7 +15,7 @@ export interface INodeCacheObject
 export interface IConfigIMDb
 {
     id: string
-    type: number
+    type: string
     title: string
     category: string
     rating: number
