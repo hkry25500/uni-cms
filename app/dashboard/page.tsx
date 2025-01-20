@@ -8,8 +8,8 @@ export const metadata: Metadata = {
 export default async function DashboardPage() {
     return (
         <>
-            <div className="px-6 py-8">
-                <div className="max-w-4xl mx-auto">
+            <div className="min-h-screen px-6 py-8 bg-yellow-50">
+                <div className="max-w-screen-lg mx-auto">
                     <div className="bg-white rounded-3xl p-8 mb-5">
                         <h1 className="text-3xl font-bold mb-10">
                             Messaging ID framework development for the marketing branch

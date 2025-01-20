@@ -1,10 +1,14 @@
-import { getUserById, getUsers, getUsersTableColumns } from "@/lib/util/db";
+import { getMovies, getMoviesById, getMoviesTableColumns, getUserById, getUsers, getUsersTableColumns, updateUser } from "@/lib/util/db";
 import { NextRequest, NextResponse } from "next/server";
 
 const funcs: { [key: string]: Function } = {
     getUsers,
     getUserById,
     getUsersTableColumns,
+    updateUser,
+    getMovies,
+    getMoviesById,
+    getMoviesTableColumns
 }
 
 export async function GET(req: NextRequest, { params }: {
@@ -33,7 +37,10 @@ export async function GET(req: NextRequest, { params }: {
 
     try {
         const result = await f(...args);
-        return NextResponse.json(result);
+        if (result)
+            return NextResponse.json(result);
+        else
+            return NextResponse.json({ success: true });
     } catch (error) {
         return NextResponse.json(
             { success: false, error: String(error) },

@@ -53,3 +53,17 @@ export function extractInitials(str: string) {
         return str.charAt(0).toUpperCase();
     }
 }
+
+export function truncateWithEllipsis(str: string, maxLength: number, ellipsis: string = '...'): string {
+    if (!str || str.length <= maxLength) {
+        return str;
+    }
+    return str.slice(0, maxLength) + ellipsis;
+}
+
+export function maskPassword(str: string, maxLength: number): string {
+    if (!str || str.length >= maxLength)
+        return '•'.repeat(maxLength);
+    else
+        return '•'.repeat(str.length);
+}

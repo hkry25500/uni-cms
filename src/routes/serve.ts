@@ -9,7 +9,7 @@ import ffmpeg from 'fluent-ffmpeg';
 
 const router = Router();
 
-const folderPath = process.env.CONTENT_FOLDER_PATH || homedir();
+const folderPath = process.env.CONTENT_DIR_PATH || homedir();
 const moviesDirPath = path.join(folderPath, './movies');
 
 ffmpeg.setFfmpegPath(process.env.FFMPEG_EXECUTABLE_PATH as string);
@@ -35,8 +35,7 @@ router.get('/movies', (_req: Request, res: Response) =>
         }
         catch (error)
         {
-            console.error('Invalid configuration detected:', error);
-            res.status(500).send();
+            continue;
         }
     }
 

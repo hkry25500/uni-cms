@@ -7,7 +7,7 @@
       }
     ],
     "target": "ES6",
-    "module": "CommonJS",
+    "module": "ESNext",
     "allowJs": true,
     "checkJs": false,
     "outDir": "./dist",
@@ -34,11 +34,12 @@
       "dom.iterable",
       "esnext"
     ],
-    "noEmit": false,
+    "noEmit": true,
     "incremental": false,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "isolatedModules": true,
     "resolveJsonModule": true,
+    "allowImportingTsExtensions": true
   },
   "include": [
     "next-env.d.ts",

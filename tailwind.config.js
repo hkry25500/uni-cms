@@ -1,9 +1,17 @@
 /** @type {import('tailwindcss').Config} */
 export const content = [
-  "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+  "./app/**/*.{js,ts,jsx,tsx,mdx}",
 ];
 export const theme = {
-  extend: {},
+  extend: {
+    zIndex: {
+      '60': '60',
+      '70': '70',
+      '80': '80',
+      '90': '90',
+      '100': '100',
+    },
+  },
 };
 export const plugins = [
   require('@tailwindcss/aspect-ratio'),

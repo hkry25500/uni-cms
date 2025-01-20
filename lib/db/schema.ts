@@ -14,7 +14,7 @@ export const moviesTable = mysqlTable('movies', {
     type: mysqlEnum('type', ['movie', 'series', 'episode']).notNull(),
     title: varchar('title', { length: 255 }).notNull(),
     rating: float('rating').notNull(),
-    classification: varchar('classification', { length: 255 }).notNull(),
+    classification: mysqlEnum('classification', ['G', 'PG', 'PG-13', 'R', 'NC-17']).notNull(),
     description: text('description').notNull(),
     casts: longtext('casts').notNull(),
     director: longtext('director').notNull(),
