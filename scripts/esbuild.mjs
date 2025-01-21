@@ -1,7 +1,6 @@
 import { build } from 'esbuild';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import envFilePlugin from 'esbuild-envfile-plugin';
 
 
 // 获取当前模块的目录路径
@@ -18,9 +17,7 @@ build({
     outfile: outFile,
     target: 'node16',
     external: ['next'], // 将路径标记为外部依赖
-    plugins: [envFilePlugin],
-    define: {
-        // "process.env.CONTENT_DIR_PATH": JSON.stringify("D:\\Express\\static")
-    }
+    plugins: [],
+    define: {}
 })
 .catch(() => process.exit(1));

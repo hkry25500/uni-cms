@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
 
 
-export default function GalleryItemInEdit({ defaultValue, onEnter, onCancel }: {
+export default function ItemInEdit({ defaultValue, onEnter, onCancel }: {
     defaultValue: string;
     onEnter: (str: string) => void;
     onCancel: () => void;

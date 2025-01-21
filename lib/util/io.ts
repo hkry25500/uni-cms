@@ -18,10 +18,11 @@ export async function fetchDirectoryContents(dirpath: string)
 
             if (stat.isDirectory()) {
                 let type = 'directory';
-                const imdbConfigPath = path.join(fullPath, 'imdb.config.json');
-                if (await fs.pathExists(imdbConfigPath)) {
+
+                if (await fs.pathExists(path.join(fullPath, 'imdb.config.json'))) {
                     type = 'imdb';
                 }
+
                 results.push({ type, path: fullPath, name: item });
             } else {
                 results.push({ type: 'file', path: fullPath, name: item });

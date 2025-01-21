@@ -1,19 +1,18 @@
 'use client'
 
-import GalleryItemIMDb from "../components/gallery/gallery-item-imdb";
-import GalleryFolder from "../components/gallery/gallery-folder";
+import ItemIMDb from "../components/gallery/item-imdb";
+import ItemFolder from "../components/gallery/item-folder";
 import { useEffect, useState } from "react";
-import GalleryItemInEdit from "../components/gallery/gallery-in-edit";
+import ItemInEdit from "../components/gallery/item-in-edit";
+import ItemFile from "../components/gallery/item-file";
 
 
-export default function ExplorerPage({ dirpath }: any)
-{
+export default function ExplorerPage({ dirpath }: any) {
     const [contents, setContents] = useState<any[]>([]);
     const [currentPath, setCurrentPath] = useState(dirpath);
     const [pathSegments, setPathSegments] = useState<string[]>();
     const [contextMenu, setContextMenu] = useState<{ x: number; y: number; isVisible: boolean }>({ x: 0, y: 0, isVisible: false });
     const [inEditing, setInEditing] = useState(false);
-    const [contentEditing, setContentEditing] = useState<string>();
 
 
     useEffect(() => {
@@ -113,22 +112,35 @@ export default function ExplorerPage({ dirpath }: any)
                     {
                         contents.map((content: any) => {
                             if (content.type === 'directory') {
-                                return  <GalleryFolder
-                                            key={content.name}
-                                            content={content}
-                                            onClick={() => handleDirectoryChange(content.path)}
-                                            onRefresh={handleRefresh}
-                                        />
+                                return (
+                                    <ItemFolder
+                                        key={content.name}
+                                        content={content}
+                                        onClick={() => handleDirectoryChange(content.path)}
+                                        onRefresh={handleRefresh}
+                                    />
+                                )
+                            }
+                            else if (content.type === 'file') {
+                                return (
+                                    <ItemFile key={content.name} content={content} />
+                                )
                             }
                             else if (content.type === 'imdb') {
-                                return <GalleryItemIMDb key={content.name} content={content} />
+                                return (
+                                    <ItemIMDb
+                                        key={content.name}
+                                        content={content}
+                                        onClick={() => handleDirectoryChange(content.path)}
+                                    />
+                                )
                             }
                         })
                     }
                     {
                         inEditing ?
                             <>
-                                <GalleryItemInEdit
+                                <ItemInEdit
                                     defaultValue="New Folder"
                                     onEnter={(str) => {
                                         setInEditing(false);
@@ -257,7 +269,7 @@ function ContextMenu({ x, y, isVisible, onClose, onRefresh, onNewFolder }: {
                             </div>
                         </div>
                         <div
-                            className={`${!isCreateSubMenuOpen?'hidden ':''}absolute translate-x-[205px] left-auto bottom-0 right-0 flex flex-col rounded-lg bg-white shadow-sm border border-slate-200`}
+                            className={`${!isCreateSubMenuOpen ? 'hidden ' : ''}absolute translate-x-[205px] left-auto bottom-0 right-0 flex flex-col rounded-lg bg-white shadow-sm border border-slate-200`}
                             onMouseEnter={() => setIsMouseStillOnSubMenu(true)}
                             onMouseLeave={() => setIsMouseStillOnSubMenu(false)}
                         >
