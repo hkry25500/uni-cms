@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { MysqlColored, TableColored } from "../components/svg/mysql";
-import { JsonColored } from "../components/svg/json";
+import { MysqlColored, TableColored } from "../../components/svg/mysql";
+import { JsonColored } from "../../components/svg/json";
 import MysqlTable from "./mysql-table";
 
 
@@ -38,7 +38,7 @@ export default function Page() {
 
     return (
         <>
-            <div className="relative px-6 py-8 min-h-screen sm:rounded-lg overflow-hidden bg-yellow-50">
+            <div className="relative px-6 py-8 min-h-screen sm:rounded-lg overflow-hidden">
                 <div className="flex flex-col-reverse sm:flex-row flex-wrap items-center justify-between gap-4 sm:gap-0 pb-6">
                     <div className="inline-flex flex-col md:flex-row gap-4 max-md:w-80">
                         {/* Data Source Dropdown */}
@@ -156,24 +156,6 @@ export default function Page() {
                                     className="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200"
                                     aria-labelledby="dropdownRadioButton"
                                 >
-                                    {/* <li>
-                                        <div
-                                            className="flex items-center p-2 rounded cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
-                                            onClick={() => handleTableChange('users')}
-                                        >
-                                            <input
-                                                type="radio"
-                                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600"
-                                                checked={selectedTable === 'users'}
-                                                readOnly
-                                            />
-                                            <label
-                                                className="w-full ms-2 text-sm font-medium rounded cursor-pointer text-gray-900 dark:text-gray-300"
-                                            >
-                                                users
-                                            </label>
-                                        </div>
-                                    </li> */}
                                     {
                                         tables?.map((table, index) => {
                                             return (

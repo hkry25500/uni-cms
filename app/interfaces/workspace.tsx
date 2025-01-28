@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { TableColored } from "../components/svg/mysql"
-import { DateValueBadge, EnumValueBadge, NumberValueBadge, TextValueBadge } from "../components/badges";
+import { TableColored } from "../../components/svg/mysql"
+import { DateValueBadge, EnumValueBadge, NumberValueBadge, TextValueBadge } from "../../components/badges";
 
 
 export default function Workspace() {

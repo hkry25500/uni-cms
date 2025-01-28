@@ -1,7 +1,7 @@
 'use client'
 
 import { ChangeEvent, useEffect, useState } from "react";
-import Avatar from "../components/avatar";
+import Avatar from "../../components/avatar";
 import { maskPassword, truncateWithEllipsis } from "@/lib/util/string";
 
 

@@ -1,7 +1,7 @@
 'use client'
 
-import Header from "./components/header"
-import Sidebar from "./components/sidebar"
+import Header from "../components/header"
+import Sidebar from "../components/sidebar"
 
 
 export default function Providers({ children }: { children: React.ReactNode })
