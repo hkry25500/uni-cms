@@ -1,7 +1,11 @@
-import { getMovies, getMoviesById, getMoviesTableColumns, getUserById, getUsers, getUsersTableColumns, updateUser } from "@/lib/util/db";
+import { getMovies, getMoviesById, getMoviesTableColumns, showTables, getUserById, getUsers, getUsersTableColumns, updateUser, showColumnsFrom, selectFrom, selectFromWhere } from "@/lib/util/db";
 import { NextRequest, NextResponse } from "next/server";
 
 const funcs: { [key: string]: Function } = {
+    selectFrom,
+    selectFromWhere,
+    showTables,
+    showColumnsFrom,
     getUsers,
     getUserById,
     getUsersTableColumns,

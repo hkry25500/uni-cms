@@ -7,6 +7,7 @@ import express from "express";
 import cors from 'cors'
 import next from 'next';
 import { exec } from 'child_process';
+import { JSManager } from '@/lib/plugin/javascript';
 
 
 const program = new Command();
@@ -24,20 +25,28 @@ program
     .action(async () =>
     {
         const server = express();
+        const js_manager = await new JSManager().buildAsync()
 
+        // Load all Middlewares
         server.use(cors({ origin: '*', optionsSuccessStatus: 200 }));
 
         server.use('/', (await import('../src/routes/serve')).default);
 
+        // Load all JS written plugin in memory
+        await js_manager.loadAll(server);
+
+        // TODO: Python compatible plugin
+        //
+
+        // OPTIONAL: Load WEB UI
         if (process.env.NO_WEBUI === 'false')
         {
-            const app = next({});
+            const app = next({ dev: true });
 
-            app.prepare().then(() =>
-            {
-                server.get('*', (req, res) => {
-                    return app.getRequestHandler()(req, res);
-                });
+            await app.prepare();
+
+            server.get('*', (req, res) => {
+                return app.getRequestHandler()(req, res);
             });
         }
 
@@ -53,7 +62,13 @@ program
             console.log('\x1b[35m\x1b[1m%s\x1b[0m', `🌈 Database URL: \x1b[0m\x1b[35m${env.DATABASE_URL}`);
             console.log();
             console.log('\x1b[32m\x1b[1m%s\x1b[0m', '🔄 HMR is enabled!');
-            if (env.NO_WEBUI==='false') console.log('\x1b[32m\x1b[1m%s\x1b[0m', '💻 WEB UI is enabled!');
+            if (env.NO_WEBUI==='false') console.log('\x1b[32m\x1b[1m%s\x1b[0m', '💻 WEBUI is enabled!');
+            // Plugin
+            console.log('\n');
+            console.log('\x1b[43m\x1b[30m%s\x1b[0m', '🔌 Loading available plugins...');
+            for (const plugin of js_manager.getPluginList()) {
+                console.log('\x1b[30m\x1b[1m%s\x1b[0m', `✅ ${plugin.name} is enabled!`);
+            }
         });
     });
 
@@ -64,24 +79,33 @@ program
     .action(async () =>
     {
         const server = express();
+        const js_manager = await new JSManager().buildAsync()
 
+        // Load all Middlewares
         server.use(cors({ origin: '*', optionsSuccessStatus: 200 }));
 
         server.use('/', (await import('../src/routes/serve')).default);
 
+        // Load all JS written plugin in memory
+        await js_manager.loadAll(server);
+
+        // TODO: Python compatible plugin
+        //
+
+        // OPTIONAL: Load WEB UI
         if (process.env.NO_WEBUI === 'false')
         {
             const app = next({ dev: true });
 
-            app.prepare().then(() =>
-            {
-                server.get('*', (req, res) => {
-                    return app.getRequestHandler()(req, res);
-                });
+            await app.prepare();
+
+            server.get('*', (req, res) => {
+                return app.getRequestHandler()(req, res);
             });
         }
 
         server.listen(port, address, () => {
+            // Default
             console.log();
             console.log('\x1b[43m\x1b[30m%s\x1b[0m', '🚀 uniCMS server is running!');
             console.log('\x1b[41m\x1b[37m%s\x1b[0m', '🔴 DEV ONLY, DO NOT USE THIS IN PRODUCTION!');
@@ -95,7 +119,13 @@ program
             console.log('\x1b[35m\x1b[1m%s\x1b[0m', `🌈 Database URL: \x1b[0m\x1b[35m${env.DATABASE_URL}`);
             console.log();
             console.log('\x1b[32m\x1b[1m%s\x1b[0m', '🔄 HMR is enabled!');
-            if (env.NO_WEBUI==='false') console.log('\x1b[32m\x1b[1m%s\x1b[0m', '💻 WEB UI is enabled!');
+            if (env.NO_WEBUI==='false') console.log('\x1b[32m\x1b[1m%s\x1b[0m', '💻 WEBUI is enabled!');
+            // Plugin
+            console.log('\n');
+            console.log('\x1b[43m\x1b[30m%s\x1b[0m', '🔌 Loading available plugins...');
+            for (const plugin of js_manager.getPluginList()) {
+                console.log('\x1b[30m\x1b[1m%s\x1b[0m', `✅ ${plugin.name} is enabled!`);
+            }
         });
     });
 
@@ -128,6 +158,13 @@ program
             console.log('\x1b[42m\x1b[30m%s\x1b[0m', '✅ Production build completed successfully.');
             console.log();
         });
+    });
+
+program
+    .command("test")
+    .description("")
+    .action(async () =>
+    {
     });
 
 

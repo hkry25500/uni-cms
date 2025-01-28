@@ -21,3 +21,12 @@ type TableType =
 | 'comments'
 // Default
 | 'none';
+
+type PluginData = {
+    name: string;
+    dirPath: string;
+    entryPath: string;
+    metadata?: Partial<{ name: string; description: string; version: string; author: string; }>
+}
+type JSPlugin = PluginData & Partial<{ module: any }>
+type PythonPlugin = PluginData & Partial<{ code: string }>

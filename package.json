@@ -8,7 +8,7 @@
   "scripts": {
     "preview": "next dev",
     "pack": "node ./scripts/esbuild.mjs",
-    "test": "npm run pack && unicms build",
+    "test": "npm run pack && unicms test",
     "dev": "unicms dev",
     "build": "next build",
     "start": "unicms start"

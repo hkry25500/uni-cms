@@ -6,7 +6,7 @@ import { maskPassword, truncateWithEllipsis } from "@/lib/util/string";
 
 
 export default function MysqlTable({ table }: {
-    table: TableType;
+    table: string;
 }) {
     return (
         <div className="overflow-x-auto">
@@ -14,10 +14,108 @@ export default function MysqlTable({ table }: {
                 table === 'users' ? <UsersTable /> :
                     table === 'movies' ? <MoviesTable /> :
                         // Default
-                        null
+                        <Table table={table} />
             }
 
         </div>
+    )
+}
+
+
+function Table({ table }) {
+    const [columns, setColumns] = useState<any[]>();
+    const [rows, setRows] = useState<any[]>();
+
+
+    useEffect(() => {
+        if (table)
+            fetch(`/api/utils/db/showColumnsFrom?args_0=${table}`)
+                .then(res => {
+                    if (res.ok)
+                        return res.json();
+                    else
+                        return [];
+                })
+                .then(columns => setColumns(columns));
+    }, [table]);
+
+    useEffect(() => {
+        if (table)
+            fetch(`/api/utils/db/selectFrom?args_0=${table}`)
+                .then(res => {
+                    if (res.ok)
+                        return res.json();
+                    else
+                        return [];
+                })
+                .then(rows => setRows(rows));
+    }, [table]);
+
+
+    return (
+        <>
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" className="p-4">
+                                <div className="flex items-center">
+                                    <input
+                                        id="checkbox-all-search"
+                                        type="checkbox"
+                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600"
+                                    />
+                                    <label htmlFor="checkbox-all-search" className="sr-only">
+                                        checkbox
+                                    </label>
+                                </div>
+                            </th>
+                            <th scope="col" className="p-4">
+                                Order
+                            </th>
+                            {
+                                columns?.map((col, index) => {
+                                    return (
+                                        <th key={index} scope="col" className="px-6 py-4">
+                                            {col.Field}
+                                        </th>
+                                    )
+                                })
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            rows?.map((row, index) => {
+                                return (
+                                    <tr
+                                        key={index}
+                                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
+                                    >
+                                        <td className="w-4 p-4">
+                                            <div className="flex items-center">
+                                                <input id="checkbox-table-search-1" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600" />
+                                                <label htmlFor="checkbox-table-search-1" className="sr-only">checkbox</label>
+                                            </div>
+                                        </td>
+                                        <td className="w-4 h-4 text-center text-gray-950">
+                                            { index + 1 }
+                                        </td>
+                                        {
+                                            Object.values(row).map((item: any, index: number) => {
+                                                return (
+                                                    <td key={index} className="px-6 py-4">{ item }</td>
+                                                )
+                                            })
+                                        }
+                                    </tr>
+                                )
+                            })
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </>
     )
 }
 
@@ -80,11 +178,11 @@ function UsersTable() {
         const formatObj = { ...userEditing };
         delete formatObj.avatar;
         fetch(`/api/utils/db/updateUser?args_0=${userEditing.uid}&args_1=${JSON.stringify(formatObj)}`)
-        .finally(() => {
-            setEditModal(false);
-            setUserEditing(null);
-            fetchUsers();
-        });
+            .finally(() => {
+                setEditModal(false);
+                setUserEditing(null);
+                fetchUsers();
+            });
     }
 
 
@@ -162,9 +260,9 @@ function UsersTable() {
                                         </td>
                                         <td className="px-3 py-4 text-center">
                                             <a
-                                            role="button"
-                                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                            onClick={() => handleUserUpdate(user)}
+                                                role="button"
+                                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                                onClick={() => handleUserUpdate(user)}
                                             >
                                                 Edit
                                             </a>
@@ -178,160 +276,160 @@ function UsersTable() {
                 {/* Main modal */}
                 {
                     isEditModalShow && userEditing ?
-                    <div
-                        className="overflow-y-auto overflow-x-hidden fixed top-0 left-0 right-0 bottom-0 z-40 flex justify-center items-center w-full md:inset-0 md:h-full"
-                    >
-                        <div className="fixed inset-0 bg-black opacity-50" onClick={() => cancelUserUpdate()}></div>
-                        <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
-                            {/* Modal content */}
-                            <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-                                {/* Modal header */}
-                                <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                        {`${userEditing.name}'s Profile`}
-                                    </h3>
-                                    <button
-                                        type="button"
-                                        className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                        onClick={() => cancelUserUpdate()}
-                                    >
-                                        <svg
-                                            aria-hidden="true"
-                                            className="w-5 h-5"
-                                            fill="currentColor"
-                                            viewBox="0 0 20 20"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                                clipRule="evenodd"
-                                            />
-                                        </svg>
-                                        <span className="sr-only">Close modal</span>
-                                    </button>
-                                </div>
-                                {/* Modal body */}
-                                <form>
-                                    <div className="grid gap-4 mb-4 sm:grid-cols-2">
-                                        <div>
-                                            <label
-                                                htmlFor="name"
-                                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                            >
-                                                Name
-                                            </label>
-                                            <input
-                                                type="text"
-                                                name="name"
-                                                id="name"
-                                                defaultValue={ userEditing.name }
-                                                onChange={(e: ChangeEvent<HTMLInputElement>) => setUserEditing((prev: any) => ({ ...prev, name: e.target.value }))}
-                                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-yellow-600 focus:border-yellow-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-yellow-500 dark:focus:border-yellow-500"
-                                                placeholder="Ex. Apple iMac 27“"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label
-                                                htmlFor="email"
-                                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                            >
-                                                E-mail
-                                            </label>
-                                            <input
-                                                type="text"
-                                                name="email"
-                                                id="email"
-                                                defaultValue={ userEditing.email }
-                                                onChange={(e: ChangeEvent<HTMLInputElement>) => setUserEditing((prev: any) => ({ ...prev, email: e.target.value }))}
-                                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-yellow-600 focus:border-yellow-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-yellow-500 dark:focus:border-yellow-500"
-                                                placeholder="Ex. Apple"
-                                            />
-                                        </div>
-                                        <div className="col-span-2">
-                                            <label
-                                                htmlFor="password"
-                                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                            >
-                                                Password
-                                            </label>
-                                            <input
-                                                type="password"
-                                                defaultValue={ userEditing.password }
-                                                onChange={(e: ChangeEvent<HTMLInputElement>) => setUserEditing((prev: any) => ({ ...prev, password: e.target.value }))}
-                                                name="password"
-                                                id="password"
-                                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-yellow-600 focus:border-yellow-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-yellow-500 dark:focus:border-yellow-500"
-                                            />
-                                        </div>
-                                        <div className="col-span-2">
-                                            <label
-                                                htmlFor="category"
-                                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                            >
-                                                Category
-                                            </label>
-                                            <select
-                                                id="category"
-                                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-                                                defaultValue='member'
-                                            >
-                                                <option value="visitor">Visitor</option>
-                                                <option value="member">Member</option>
-                                                <option value="premium">Premium</option>
-                                                <option value="prime">Prime</option>
-                                                <option value="special">Special Member</option>
-                                            </select>
-                                        </div>
-                                        <div className="sm:col-span-2">
-                                            <label
-                                                htmlFor="description"
-                                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                            >
-                                                Description
-                                            </label>
-                                            <textarea
-                                                id="description"
-                                                rows={5}
-                                                className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-yellow-500 focus:border-yellow-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-yellow-500 dark:focus:border-yellow-500"
-                                                placeholder="Not available"
-                                                defaultValue=""
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center space-x-4">
+                        <div
+                            className="overflow-y-auto overflow-x-hidden fixed top-0 left-0 right-0 bottom-0 z-40 flex justify-center items-center w-full md:inset-0 md:h-full"
+                        >
+                            <div className="fixed inset-0 bg-black opacity-50" onClick={() => cancelUserUpdate()}></div>
+                            <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
+                                {/* Modal content */}
+                                <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+                                    {/* Modal header */}
+                                    <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+                                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                                            {`${userEditing.name}'s Profile`}
+                                        </h3>
                                         <button
                                             type="button"
-                                            className="text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800"
-                                            onClick={() => submitUserUpdate()}
-                                        >
-                                            Update product
-                                        </button>
-                                        <button
-                                            className="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                                            className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                                             onClick={() => cancelUserUpdate()}
                                         >
                                             <svg
-                                                className="mr-1 -ml-1 w-5 h-5"
+                                                aria-hidden="true"
+                                                className="w-5 h-5"
                                                 fill="currentColor"
                                                 viewBox="0 0 20 20"
                                                 xmlns="http://www.w3.org/2000/svg"
                                             >
                                                 <path
                                                     fillRule="evenodd"
-                                                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
                                                     clipRule="evenodd"
                                                 />
                                             </svg>
-                                            Delete
+                                            <span className="sr-only">Close modal</span>
                                         </button>
                                     </div>
-                                </form>
+                                    {/* Modal body */}
+                                    <form>
+                                        <div className="grid gap-4 mb-4 sm:grid-cols-2">
+                                            <div>
+                                                <label
+                                                    htmlFor="name"
+                                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                >
+                                                    Name
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    name="name"
+                                                    id="name"
+                                                    defaultValue={userEditing.name}
+                                                    onChange={(e: ChangeEvent<HTMLInputElement>) => setUserEditing((prev: any) => ({ ...prev, name: e.target.value }))}
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-yellow-600 focus:border-yellow-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-yellow-500 dark:focus:border-yellow-500"
+                                                    placeholder="Ex. Apple iMac 27“"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label
+                                                    htmlFor="email"
+                                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                >
+                                                    E-mail
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    name="email"
+                                                    id="email"
+                                                    defaultValue={userEditing.email}
+                                                    onChange={(e: ChangeEvent<HTMLInputElement>) => setUserEditing((prev: any) => ({ ...prev, email: e.target.value }))}
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-yellow-600 focus:border-yellow-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-yellow-500 dark:focus:border-yellow-500"
+                                                    placeholder="Ex. Apple"
+                                                />
+                                            </div>
+                                            <div className="col-span-2">
+                                                <label
+                                                    htmlFor="password"
+                                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                >
+                                                    Password
+                                                </label>
+                                                <input
+                                                    type="password"
+                                                    defaultValue={userEditing.password}
+                                                    onChange={(e: ChangeEvent<HTMLInputElement>) => setUserEditing((prev: any) => ({ ...prev, password: e.target.value }))}
+                                                    name="password"
+                                                    id="password"
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-yellow-600 focus:border-yellow-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-yellow-500 dark:focus:border-yellow-500"
+                                                />
+                                            </div>
+                                            <div className="col-span-2">
+                                                <label
+                                                    htmlFor="category"
+                                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                >
+                                                    Category
+                                                </label>
+                                                <select
+                                                    id="category"
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                                                    defaultValue='member'
+                                                >
+                                                    <option value="visitor">Visitor</option>
+                                                    <option value="member">Member</option>
+                                                    <option value="premium">Premium</option>
+                                                    <option value="prime">Prime</option>
+                                                    <option value="special">Special Member</option>
+                                                </select>
+                                            </div>
+                                            <div className="sm:col-span-2">
+                                                <label
+                                                    htmlFor="description"
+                                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                >
+                                                    Description
+                                                </label>
+                                                <textarea
+                                                    id="description"
+                                                    rows={5}
+                                                    className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-yellow-500 focus:border-yellow-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-yellow-500 dark:focus:border-yellow-500"
+                                                    placeholder="Not available"
+                                                    defaultValue=""
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center space-x-4">
+                                            <button
+                                                type="button"
+                                                className="text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800"
+                                                onClick={() => submitUserUpdate()}
+                                            >
+                                                Update product
+                                            </button>
+                                            <button
+                                                className="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                                                onClick={() => cancelUserUpdate()}
+                                            >
+                                                <svg
+                                                    className="mr-1 -ml-1 w-5 h-5"
+                                                    fill="currentColor"
+                                                    viewBox="0 0 20 20"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <path
+                                                        fillRule="evenodd"
+                                                        d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                                        clipRule="evenodd"
+                                                    />
+                                                </svg>
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    :
-                    null
+                        :
+                        null
                 }
             </>
         )

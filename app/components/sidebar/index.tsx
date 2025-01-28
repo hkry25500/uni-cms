@@ -28,7 +28,7 @@ export default function Sidebar()
 
     return (
         <>
-            <aside className="fixed inset-y-0 left-0 bg-white shadow-md max-h-screen w-64 max-md:hidden">
+            <aside className="fixed inset-y-0 left-0 bg-white shadow-md h-screen w-64 max-md:hidden">
                 <div className="flex flex-col justify-between h-full">
                     <div className="flex-grow">
                         <div className="px-4 py-6 text-center border-b">

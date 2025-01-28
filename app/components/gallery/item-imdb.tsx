@@ -53,7 +53,7 @@ export default function ItemIMDb({ content, onClick }: {
                     </div>
                     <div className="p-2 space-y-1">
                         <div className="flex items-start justify-between gap-4">
-                            <h3 className="flex-1 text-base font-medium text-gray-900">
+                            <h3 className="flex-1 text-base font-medium overflow-hidden text-ellipsis text-nowrap text-gray-900">
                                 {movie.title}
                             </h3>
                             <span className="mt-1 shrink-0 text-xs inline-flex items-center gap-1">

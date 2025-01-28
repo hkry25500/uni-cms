@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MysqlColored, TableColored } from "../components/svg/mysql";
 import { JsonColored } from "../components/svg/json";
 import MysqlTable from "./mysql-table";
@@ -10,7 +10,8 @@ export default function Page() {
     const [sourceDropdown, setSourceDropdown] = useState(false);
     const [selectedSource, setSelectedSource] = useState<DataSource>('none');
     const [tableDropdown, setTableDropdown] = useState(false);
-    const [selectedTable, setSelectedTable] = useState<TableType>('none');
+    const [tables, setTables] = useState<any[]>();
+    const [selectedTable, setSelectedTable] = useState<string>();
 
 
     const handleSourceChange = (source: DataSource) => {
@@ -18,10 +19,21 @@ export default function Page() {
         setSourceDropdown(false);
     };
 
-    const handleTableChange = (table: TableType) => {
+    const handleTableChange = (table: string) => {
         setSelectedTable(table);
         setTableDropdown(false);
     };
+
+
+    useEffect(() => {
+        if (!tables)
+            fetch('/api/utils/db/showTables')
+                .then(res => {
+                    if (res.ok)
+                        return res.json();
+                })
+                .then(tables => setTables(tables));
+    }, []);
 
 
     return (
@@ -38,13 +50,13 @@ export default function Page() {
                             >
                                 {
                                     selectedSource === 'json' ? <JsonColored className="w-5 h-5" /> :
-                                    selectedSource === 'mysql' ? <MysqlColored className="w-5 h-5" /> :
-                                    null
+                                        selectedSource === 'mysql' ? <MysqlColored className="w-5 h-5" /> :
+                                            null
                                 }
                                 {
                                     selectedSource === 'json' ? 'JSON' :
-                                    selectedSource === 'mysql' ? 'MySQL' :
-                                    'Not selected'
+                                        selectedSource === 'mysql' ? 'MySQL' :
+                                            'Not selected'
                                 }
                                 <svg
                                     className="w-2.5 h-2.5 ms-2.5"
@@ -118,11 +130,7 @@ export default function Page() {
                                 onClick={() => setTableDropdown(prev => !prev)}
                             >
                                 <TableColored className="w-5 h-5" />
-                                {
-                                    selectedTable === 'users' ? 'Users' :
-                                    selectedTable === 'movies' ? 'Movies' :
-                                    ''
-                                }
+                                {selectedTable}
                                 <svg
                                     className="w-2.5 h-2.5 ms-2.5"
                                     aria-hidden="true"
@@ -148,7 +156,7 @@ export default function Page() {
                                     className="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200"
                                     aria-labelledby="dropdownRadioButton"
                                 >
-                                    <li>
+                                    {/* <li>
                                         <div
                                             className="flex items-center p-2 rounded cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
                                             onClick={() => handleTableChange('users')}
@@ -165,25 +173,31 @@ export default function Page() {
                                                 users
                                             </label>
                                         </div>
-                                    </li>
-                                    <li>
-                                        <div
-                                            className="flex items-center p-2 rounded cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
-                                            onClick={() => handleTableChange('movies')}
-                                        >
-                                            <input
-                                                type="radio"
-                                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600"
-                                                checked={selectedTable === 'movies'}
-                                                readOnly
-                                            />
-                                            <label
-                                                className="w-full ms-2 text-sm font-medium rounded cursor-pointer text-gray-900 dark:text-gray-300"
-                                            >
-                                                movies
-                                            </label>
-                                        </div>
-                                    </li>
+                                    </li> */}
+                                    {
+                                        tables?.map((table, index) => {
+                                            return (
+                                                <li key={index}>
+                                                    <div
+                                                        className="flex items-center p-2 rounded cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                        onClick={() => handleTableChange(table.name)}
+                                                    >
+                                                        <input
+                                                            type="radio"
+                                                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600"
+                                                            checked={selectedTable === table.name}
+                                                            readOnly
+                                                        />
+                                                        <label
+                                                            className="w-full ms-2 text-sm font-medium rounded cursor-pointer text-gray-900 dark:text-gray-300"
+                                                        >
+                                                            { table.name }
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                            )
+                                        })
+                                    }
                                 </ul>
                             </div>
                         </div>
@@ -214,8 +228,9 @@ export default function Page() {
                     </div>
                 </div>
                 {
+                    !selectedTable ? null :
                     selectedSource === 'mysql' ? <MysqlTable table={selectedTable} /> :
-                    <></>
+                        <></>
                 }
             </div>
         </>

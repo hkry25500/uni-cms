@@ -45,7 +45,7 @@ export default function ItemFolder({ content, onClick, onRefresh }: {
                                 </div>
                                 <div className="p-2 space-y-1">
                                     <div className="flex items-start justify-between gap-4">
-                                        <h3 className="flex-1 text-base font-medium text-gray-900">
+                                        <h3 className="flex-1 text-base font-medium overflow-hidden text-ellipsis text-nowrap text-gray-900">
                                             {content.name}
                                         </h3>
                                     </div>
