@@ -1,5 +1,6 @@
 # uniCMS
 /plugins
+*.test.*
 
 # Node.js
 node_modules/

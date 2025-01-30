@@ -49,11 +49,11 @@ export class JSManager
         this.pathToPlugins = path.join(process.cwd(), "plugins");
 
         await fs.readdir(this.pathToPlugins)
-            .then(async items =>
+            .then(async dirnames =>
             {
-                for (const item of items)
+                for (const dirname of dirnames)
                 {
-                    const path_to_plugin_dir = path.join(this.pathToPlugins, item);
+                    const path_to_plugin_dir = path.join(this.pathToPlugins, dirname);
                     const stat = await fs.stat(path_to_plugin_dir);
 
                     if (stat.isDirectory())
@@ -61,9 +61,9 @@ export class JSManager
                         const path_to_plugin_entry = path.join(path_to_plugin_dir, 'entry.mjs');
                         const module = await import(this.convertToFileURL(path_to_plugin_entry));
                         this.plugins.set(
-                            item,
+                            dirname,
                             {
-                                name: item,
+                                name: module.metadata.name || dirname,
                                 dirPath: path_to_plugin_dir,
                                 entryPath: path_to_plugin_entry,
                                 metadata: module.metadata,
