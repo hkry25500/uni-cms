@@ -10,7 +10,7 @@
     "pack": "node ./scripts/esbuild.mjs",
     "test": "npm run pack && unicms test",
     "dev": "unicms dev",
-    "build": "next build",
+    "build": "unicms build",
     "start": "unicms start"
   },
   "author": "Benjamin Dogg",
@@ -38,7 +38,6 @@
     "dotenv": "^16.4.5",
     "drizzle-kit": "^0.30.1",
     "esbuild": "^0.24.2",
-    "esbuild-envfile-plugin": "^1.0.7",
     "fluent-ffmpeg": "^2.1.3",
     "fs-extra": "^11.2.0",
     "mysql2": "^3.12.0",
