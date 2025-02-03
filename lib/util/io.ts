@@ -1,5 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
+import { getExtension } from './string';
 
 
 export async function fetchDirectoryContents(dirpath: string)
@@ -23,9 +24,9 @@ export async function fetchDirectoryContents(dirpath: string)
                     type = 'imdb';
                 }
 
-                results.push({ type, path: fullPath, name: item });
+                results.push({ type, path: fullPath, name: item, ext: '' });
             } else {
-                results.push({ type: 'file', path: fullPath, name: item });
+                results.push({ type: 'file', path: fullPath, name: item, ext: getExtension(item) });
             }
         }
     }

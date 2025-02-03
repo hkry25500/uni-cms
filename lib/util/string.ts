@@ -1,5 +1,3 @@
-
-
 type StringType = 'letter' | 'cjk' | undefined;
 
 export function withUpperCase(text: string) {
@@ -37,15 +35,15 @@ export function hasSpace(str: string): boolean {
 export function extractInitials(str: string) {
     if (hasSpace(str)) {
         const parts: string[] = str.split(' ');
-        if (checkFirstCharType(parts[0])==='letter' && checkFirstCharType(parts[1])==='letter') {
+        if (checkFirstCharType(parts[0]) === 'letter' && checkFirstCharType(parts[1]) === 'letter') {
             const first = str.charAt(0).toUpperCase();
             const second = str.charAt(1).toUpperCase();
-            return first+second;
+            return first + second;
         }
-        else if (checkFirstCharType(parts[0])==='letter' && checkFirstCharType(parts[1])!=='letter') {
+        else if (checkFirstCharType(parts[0]) === 'letter' && checkFirstCharType(parts[1]) !== 'letter') {
             return str.charAt(0).toUpperCase();
         }
-        else if (checkFirstCharType(parts[0])==='cjk') {
+        else if (checkFirstCharType(parts[0]) === 'cjk') {
             return str.charAt(0).toUpperCase();
         }
     }
@@ -66,4 +64,11 @@ export function maskPassword(str: string, maxLength: number): string {
         return '•'.repeat(maxLength);
     else
         return '•'.repeat(str.length);
+}
+
+export function getExtension(str: string): string | undefined {
+    const parts = str.split('.');
+    if (parts.length > 1) {
+        return parts.pop()!;
+    }
 }

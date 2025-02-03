@@ -1,11 +1,11 @@
 'use client'
 
-import ItemIMDb from "../../components/gallery/item-imdb";
-import ItemFolder from "../../components/gallery/item-folder";
+import ItemIMDb from "@/components/gallery/item-imdb";
+import ItemFolder from "@/components/gallery/item-folder";
 import { useEffect, useRef, useState } from "react";
-import ItemInEdit from "../../components/gallery/item-in-edit";
-import ItemFile from "../../components/gallery/item-file";
-import NavToTop from "../../components/buttons/nav-to-top";
+import ItemInEdit from "@/components/gallery/item-in-edit";
+import ItemFile from "@/components/gallery/item-file";
+import NavToTop from "@/components/buttons/nav-to-top";
 
 
 export default function ExplorerPage({ dirpath }: any) {
@@ -155,7 +155,12 @@ export default function ExplorerPage({ dirpath }: any) {
                             }
                             else if (content.type === 'file') {
                                 return (
-                                    <ItemFile key={content.name} content={content} />
+                                    <ItemFile
+                                        key={content.name}
+                                        content={content}
+                                        onClick={() => undefined}
+                                        onRefresh={handleRefresh}
+                                    />
                                 )
                             }
                             else if (content.type === 'imdb') {
