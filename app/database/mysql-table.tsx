@@ -3,18 +3,21 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import Avatar from "../../components/avatar";
 import { maskPassword, truncateWithEllipsis } from "@/lib/util/string";
+import copy from "copy-to-clipboard";
+import { useToast } from "@/components/providers/toast-provider";
 
 
-export default function MysqlTable({ table }: {
+export default function MysqlTable({ table, exportBtn }: {
     table: string;
+    exportBtn: any
 }) {
     return (
-        <div className="overflow-x-auto">
+        <div className="h-[50vh] xl:h-[65vh] 2xl:h-[70vh] overflow-x-auto overflow-scroll">
             {
                 table === 'users' ? <UsersTable /> :
                     table === 'movies' ? <MoviesTable /> :
                         // Default
-                        <Table table={table} />
+                        <Table table={table} exportBtn={exportBtn} />
             }
 
         </div>
@@ -22,9 +25,12 @@ export default function MysqlTable({ table }: {
 }
 
 
-function Table({ table }) {
+function Table({ table, exportBtn }) {
     const [columns, setColumns] = useState<any[]>();
     const [rows, setRows] = useState<any[]>();
+    const [selectAll, setSelectAll] = useState(false);
+    const [selectedRows, setSelectedRows] = useState<{ [key: number]: boolean }>({});
+    const { addToast } = useToast();
 
 
     useEffect(() => {
@@ -51,19 +57,77 @@ function Table({ table }) {
                 .then(rows => setRows(rows));
     }, [table]);
 
+    useEffect(() => {
+        if (rows) {
+            for (let i = 0; i < rows.length; i++) {
+                setSelectedRows(prev => ({ ...prev, [i]: false }));
+            }
+        }
+    }, [rows]);
+
+    useEffect(() => {
+        if (rows) {
+            if (selectAll === true) {
+                for (let i = 0; i < rows.length; i++) {
+                    setSelectedRows(prev => ({ ...prev, [i]: true }));
+                }
+            }
+            else if (selectAll === false) {
+                for (let i = 0; i < rows.length; i++) {
+                    setSelectedRows(prev => ({ ...prev, [i]: false }));
+                }
+            }
+        }
+    }, [selectAll]);
+
+    useEffect(() => {
+        if (exportBtn && exportBtn.current) {
+            exportBtn.current.addEventListener('click', copyToClipboard);
+        }
+
+        return () => {
+            if (exportBtn && exportBtn.current) {
+                exportBtn.current.removeEventListener('click', copyToClipboard);
+            }
+        }
+    }, [exportBtn, rows, selectedRows]);
+
+
+    function copyToClipboard(_e: MouseEvent) {
+        if (rows) {
+            console.log(selectedRows)
+            const objectArray = Object.keys(selectedRows);
+            let selectedRowsArray: any[] = [];
+            for (let i = 0; i < objectArray.length; i++) {
+                const value = selectedRows[i];
+                if (value === true) {
+                    selectedRowsArray.push(rows[i]);
+                }
+                else
+                    continue;
+            }
+
+            copy(JSON.stringify(selectedRowsArray, null, 4)); console.log(selectedRowsArray)
+
+            addToast("Copied to clipboard", 'success', 3000);
+        }
+    }
+
 
     return (
         <>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <thead className="text-xs text-gray-700 uppercase bg-neutral-100 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="p-4">
                                 <div className="flex items-center">
                                     <input
                                         id="checkbox-all-search"
                                         type="checkbox"
-                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600"
+                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600 focus:outline-none"
+                                        checked={selectAll}
+                                        onChange={e => setSelectAll(e.target.checked)}
                                     />
                                     <label htmlFor="checkbox-all-search" className="sr-only">
                                         checkbox
@@ -71,7 +135,6 @@ function Table({ table }) {
                                 </div>
                             </th>
                             <th scope="col" className="p-4">
-                                Order
                             </th>
                             {
                                 columns?.map((col, index) => {
@@ -94,7 +157,12 @@ function Table({ table }) {
                                     >
                                         <td className="w-4 p-4">
                                             <div className="flex items-center">
-                                                <input id="checkbox-table-search-1" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600" />
+                                                <input
+                                                    id="checkbox-table-search-1"
+                                                    type="checkbox"
+                                                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600"
+                                                    checked={selectedRows[index] || false}
+                                                    onChange={e => setSelectedRows(prev => ({ ...prev, [index]: e.target.checked }))} />
                                                 <label htmlFor="checkbox-table-search-1" className="sr-only">checkbox</label>
                                             </div>
                                         </td>
@@ -190,7 +258,7 @@ function UsersTable() {
         return (
             <>
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <thead className="text-xs text-gray-700 uppercase bg-neutral-100 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="p-4">
                                 <div className="flex items-center">
@@ -471,7 +539,7 @@ function MoviesTable() {
             <>
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <thead className="text-xs text-gray-700 uppercase bg-neutral-100 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" className="p-4">
                                     <div className="flex items-center">

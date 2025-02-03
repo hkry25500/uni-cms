@@ -5,6 +5,20 @@ export const content = [
 ];
 export const theme = {
   extend: {
+    keyframes: {
+      'slide-in': {
+        '0%': { transform: 'translateY(-100%)' },
+        '100%': { transform: 'translateY(0)' },
+      },
+      'slide-out': {
+        '0%': { transform: 'translateY(0)' },
+        '100%': { transform: 'translateY(-100%)' },
+      },
+    },
+    animation: {
+      'slide-in': 'slide-in 0.5s ease-out forwards',
+      'slide-out': 'slide-out 0.5s ease-in forwards',
+    },
     zIndex: {
       '60': '60',
       '70': '70',
@@ -20,4 +34,4 @@ export const plugins = [
 export const corePlugins = {
   preflight: true,
 };
-
+export const darkMode = "class"

@@ -8,6 +8,7 @@ import cors from 'cors'
 import next from 'next';
 import { exec } from 'child_process';
 import { JSManager } from '@/lib/plugin/javascript';
+import { error } from 'node:console';
 
 
 const program = new Command();
@@ -41,7 +42,7 @@ program
         // OPTIONAL: Load WEB UI
         if (process.env.NO_WEBUI === 'false')
         {
-            const app = next({ dev: true });
+            const app = next({ dev: false });
 
             await app.prepare();
 
@@ -61,7 +62,6 @@ program
             console.log();
             console.log('\x1b[35m\x1b[1m%s\x1b[0m', `🌈 Database URL: \x1b[0m\x1b[35m${env.DATABASE_URL}`);
             console.log();
-            console.log('\x1b[32m\x1b[1m%s\x1b[0m', '🔄 HMR is enabled!');
             if (env.NO_WEBUI==='false') console.log('\x1b[32m\x1b[1m%s\x1b[0m', '💻 WEBUI is enabled!');
             // Plugin
             console.log('\n');
@@ -137,24 +137,28 @@ program
     {
         const cwd = process.cwd();
 
+        function printError(message: string) {
+            console.error(message);
+            console.log('\x1b[41m\x1b[30m%s\x1b[0m', '❌ Production build failed to complete.');
+            console.log();
+        }
+
         console.log();
         console.log('\x1b[43m\x1b[30m%s\x1b[0m', '🔨 Creating optimized production build...');
         console.log('\n');
 
         exec('next build', { cwd: cwd }, (error, stdout, stderr) => {
             if (error) {
-                console.error(error.message);
-                console.log('\x1b[41m\x1b[30m%s\x1b[0m', '❌ Production build failed to complete.');
-                console.log();
+                printError(error.message);
                 return;
             }
             if (stderr) {
-                console.error(stderr);
-                console.log('\x1b[41m\x1b[30m%s\x1b[0m', '❌ Production build failed to complete.');
-                console.log();
+                printError(stderr);
                 return;
             }
+
             console.log(stdout);
+
             console.log('\x1b[42m\x1b[30m%s\x1b[0m', '✅ Production build completed successfully.');
             console.log();
         });

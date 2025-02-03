@@ -95,7 +95,7 @@ export default function ExplorerPage({ dirpath }: any) {
         <>
             <div
                 ref={scrollArea}
-                className="h-screen px-6 py-6 bg-yellow-50 overflow-y-scroll"
+                className="h-screen px-6 py-6 bg-neutral-50 overflow-y-scroll"
                 onContextMenu={handleRightClick}
                 onScroll={onScroll}
             >

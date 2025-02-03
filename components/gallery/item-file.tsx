@@ -3,7 +3,7 @@ export default function ItemFile({ content }) {
         <>
             <div className="block relative transition hover:scale-105 hover:-rotate-1 w-full max-w-[324px] cursor-pointer">
                 <div className="block">
-                    <div className="aspect-w-16 aspect-h-9 rounded-xl border shadow overflow-hidden bg-gray-50">
+                    <div className="aspect-w-16 aspect-h-9 rounded-xl border shadow overflow-hidden bg-white">
                         <svg
                             viewBox="0 0 1024 1024"
                             className="w-full h-full"

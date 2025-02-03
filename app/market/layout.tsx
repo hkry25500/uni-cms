@@ -28,7 +28,7 @@ export default function Layout({ children }) {
                     <div className="mt-10">
                         <div className="text-sm font-medium text-center text-gray-500 border-gray-200 dark:text-gray-400 dark:border-gray-700">
                             <ul className="flex -mb-px">
-                                <li className="md:me-2">
+                                <li className="md:me-px">
                                     <Link
                                         href="plugins"
                                         className={selectedTab === 'plugins' ? "inline-block p-4 w-24 md:w-32 rounded-t-lg text-xs font-semibold uppercase text-blue-600 border-b-2 border-blue-600 dark:text-blue-500 dark:border-blue-500" : "inline-block p-4 w-24 md:w-32 text-xs font-semibold uppercase border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"}
@@ -37,7 +37,7 @@ export default function Layout({ children }) {
                                         Plugins
                                     </Link>
                                 </li>
-                                <li className="md:me-2">
+                                <li className="md:me-px">
                                     <Link
                                         href="providers"
                                         className={selectedTab === 'providers' ? "inline-block p-4 w-24 md:w-32 rounded-t-lg text-xs font-semibold uppercase text-blue-600 border-b-2 border-blue-600 dark:text-blue-500 dark:border-blue-500" : "inline-block p-4 w-24 md:w-32 text-xs font-semibold uppercase border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"}
