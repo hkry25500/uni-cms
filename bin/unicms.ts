@@ -8,7 +8,6 @@ import cors from 'cors'
 import next from 'next';
 import { exec } from 'child_process';
 import { JSManager } from '@/lib/plugin/javascript';
-import { error } from 'node:console';
 
 
 const program = new Command();
@@ -18,7 +17,7 @@ const port: number = Number.parseInt(process.env.HOST_PORT || "8080");
 
 program
     .version("0.3.1")
-    .description("uniCMS is a universal Content Management System developed by UC Berkeley EECS.");
+    .description("uniCMS is a universal Content Management System developed by UC Berkeley EECS and UniJS team.");
 
 program
     .command("start")
