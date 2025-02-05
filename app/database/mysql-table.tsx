@@ -12,7 +12,7 @@ export default function MysqlTable({ table, exportBtn }: {
     exportBtn: any
 }) {
     return (
-        <div className="h-[50vh] xl:h-[65vh] 2xl:h-[70vh] overflow-x-auto overflow-scroll">
+        <div className="overflow-x-auto">
             {
                 table === 'users' ? <UsersTable /> :
                     table === 'movies' ? <MoviesTable /> :
@@ -116,9 +116,9 @@ function Table({ table, exportBtn }) {
 
     return (
         <>
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs text-gray-700 uppercase bg-neutral-100 dark:bg-gray-700 dark:text-gray-400">
+            <div className="relative h-[50vh] xl:h-[65vh] 2xl:h-[70vh] overflow-x-auto shadow-md sm:rounded-lg">
+                <table className="relative w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead className="sticky top-0 text-xs text-gray-700 uppercase bg-neutral-100 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="p-4">
                                 <div className="flex items-center">

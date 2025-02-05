@@ -39,7 +39,7 @@ export default function Page() {
 
     return (
         <>
-            <div className="relative mt-8 h-[70vh] xl:h-[75vh] 2xl:h-[80vh] md:shadow-md sm:rounded-lg md:bg-white">
+            <div className="relative mt-8 md:shadow-md sm:rounded-lg md:bg-white">
                 <div className="flex flex-col-reverse sm:flex-row flex-wrap items-center justify-between gap-4 sm:gap-0 p-5">
                     <div className="inline-flex flex-col md:flex-row gap-4 max-md:w-80">
                         {/* Data Source Dropdown */}
@@ -188,7 +188,7 @@ export default function Page() {
                     <div className="hidden md:flex flex-row gap-4">
                         <button
                             ref={exportBtnRef}
-                            className="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm font-medium rounded-md"
+                            className="inline-flex items-center px-4 py-2 hover:bg-gray-100 border border-gray-200 text-gray-800 text-sm font-medium rounded-md"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"

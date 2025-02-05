@@ -3,6 +3,7 @@
 import { withUpperCase } from "@/lib/util/string";
 import { useEffect, useState } from "react";
 import Workspace from "./workspace";
+import { inter } from '../fonts';
 
 
 export default function Page() {
@@ -27,28 +28,28 @@ export default function Page() {
         <>
             <div className="min-h-screen grid grid-cols-5 bg-neutral-50">
 
-                <div className="max-md:hidden md:col-span-1">
+                <div className="max-xl:hidden md:col-span-1 bg-white">
                     <div
-                        className="flex-shrink-0 w-full h-full border-r-2 border-indigo-100"
+                        className="flex-shrink-0 w-full h-full shadow-md"
                     >
                         <div className="h-20 p-6">
-                            <h2 className="text-xl font-semibold text-neutral-800">Collections</h2>
+                            <h2 className={`text-xl font-bold ${inter.className} tracking-tighter text-neutral-800`}>Interfaces</h2>
                         </div>
                         <nav
                             aria-label="Main"
                             className="flex flex-col h-full"
                         >
                             {/* Links */}
-                            <div className="flex-1 overflow-hidden hover:overflow-auto">
+                            <div className={`flex-1 text-sm font-semibold ${inter.className} overflow-hidden hover:overflow-auto`}>
                                 {
                                     tables?.map((table, index) => {
                                         return (
                                             <div
                                                 key={index}
-                                                className={`${selectedTable === table.name ? 'flex items-center p-4 w-full space-x-2 cursor-pointer text-sm font-semibold text-yellow-500 bg-neutral-100 border-r-2 border-yellow-500' : 'flex items-center p-4 space-x-2 cursor-pointer text-sm font-semibold text-neutral-700 transition-colors hover:bg-neutral-100'}`}
+                                                className={`${selectedTable === table.name ? 'flex items-center px-4 py-3 w-full space-x-2 cursor-pointer text-yellow-600 bg-neutral-100 border-r-2 border-yellow-400' : 'flex items-center px-4 py-3 space-x-2 cursor-pointer text-neutral-800 transition-colors hover:bg-neutral-100'}`}
                                                 onClick={() => setSelectedTable(table.name)}
                                             >
-                                                <span className="ms-4"><span className="me-3">•</span>{withUpperCase(table.name)}</span>
+                                                <span className="ms-8"><span className="me-2.5">•</span>{withUpperCase(table.name)}</span>
                                             </div>
                                         )
                                     })
@@ -58,7 +59,7 @@ export default function Page() {
                     </div>
                 </div>
 
-                <div className="col-span-4 md:col-span-4 p-6 md:px-20 md:py-10">
+                <div className="col-span-5 xl:col-span-4 p-6 md:px-20 md:py-10">
                     {
                         !selectedTable ? null :
                             <>
@@ -84,7 +85,7 @@ export default function Page() {
                                     Back
                                 </div>
                                 <div className="mt-5">
-                                    <h1 className="text-3xl font-semibold">Content</h1>
+                                    <h1 className="text-3xl font-semibold">{withUpperCase(selectedTable)}</h1>
                                     <p className="mt-2 text-base text-gray-500">Start developing by adding new API Collections into workspace</p>
                                 </div>
                                 <Workspace table={selectedTable} />
