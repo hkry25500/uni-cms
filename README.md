@@ -6,6 +6,7 @@ Uni-CMS is a simple and easy-to-use Content Management System (CMS) designed to 
 
 - [Installation](#installation)
 - [Usage](#usage)
+- [Deploy](#deploy)
 - [Features](#features)
 - [Contributing](#contributing)
 - [License](#license)
@@ -24,14 +25,53 @@ Uni-CMS is a simple and easy-to-use Content Management System (CMS) designed to 
     ```bash
     npm install
     ```
+4. Build your Next.js Application:
+    ```bash
+    npm run build
+    ```
+    Use our CLI tools we provided you (Optional)
+    ```bash
+    unicms build
+    ```
 
 ## Usage
 
-1. Start the development server:
+1. Modified .env file for Application setups:
+    <br>
+2. Start the development server:
     ```bash
-    npm start
+    unicms dev
     ```
-2. Open your browser and visit `http://localhost:3000` to view the project.
+3. Open your browser and visit `http://localhost:xxxx` to view the project.
+
+## Deploy
+
+> *Recommand for production-ready*
+
+* **Node.js**
+    1.Open the Termial
+    2.Start the production server:
+    ```bash
+    unicms start
+    ```
+<br>
+
+* **Vercel**
+    - [Instrunction](https://vercel.com/docs)
+    - [Get Started](https://vercel.com/docs/getting-started-with-vercel)
+    - [Deploy](https://vercel.com/new)
+<br>
+
+* **Github Pages**
+    - [Build and deployment](https://github.com)
+
+<br>
+
+> *Work in progress*
+* **Docker**
+* **CWS LAS**
+* **AWS EC2**
+* **Aliyun ECS**
 
 ## Features
 
