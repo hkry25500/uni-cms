@@ -26,6 +26,7 @@ export const moviesTable = mysqlTable('movies', {
 });
 
 export const commentsTable = mysqlTable('comments', {
+    id: int().autoincrement().primaryKey(),
     movieId: varchar('movie_id', { length: 255 }).notNull(),
     userId: int('user_id').notNull(),
     content: text('content').notNull(),

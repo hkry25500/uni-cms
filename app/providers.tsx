@@ -9,11 +9,13 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     return (
         <>
             <ToastProvider>
-                <Header />
-                <Sidebar />
-                <main className="ml-0 md:ml-64 pt-16 md:pt-0 min-h-screen">
-                    {children}
-                </main>
+                <div className="flex flex-row min-h-screen">
+                    <Header />
+                    <Sidebar />
+                    <main className="w-full pt-16 md:pt-0 min-h-screen">
+                        {children}
+                    </main>
+                </div>
             </ToastProvider>
         </>
     )

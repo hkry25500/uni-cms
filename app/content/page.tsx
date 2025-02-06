@@ -28,7 +28,7 @@ export default function Page() {
         <>
             <div className="min-h-screen grid grid-cols-5 bg-neutral-50">
 
-                <div className="max-xl:hidden md:col-span-1 bg-white">
+                <div className="max-xl:hidden md:col-span-1 max-w-72 bg-white">
                     <div
                         className="flex-shrink-0 w-full h-full shadow-md"
                     >

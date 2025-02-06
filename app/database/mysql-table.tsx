@@ -12,7 +12,7 @@ export default function MysqlTable({ table, exportBtn }: {
     exportBtn: any
 }) {
     return (
-        <div className="overflow-x-auto">
+        <div>
             {
                 table === 'users' ? <UsersTable /> :
                     table === 'movies' ? <MoviesTable /> :
