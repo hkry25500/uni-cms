@@ -1,9 +1,8 @@
 import path from "path";
 import fs from 'fs-extra';
-import { log } from "console";
 
 
-export class JSManager
+export class PluginManager
 {
     protected plugins: Map<string, JSPlugin> = new Map();
     protected pathToPlugins!: string;

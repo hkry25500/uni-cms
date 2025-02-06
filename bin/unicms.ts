@@ -7,7 +7,7 @@ import express from "express";
 import cors from 'cors'
 import next from 'next';
 import { exec } from 'child_process';
-import { JSManager } from '@/lib/plugin/javascript';
+import { PluginManager } from '@/lib/plugin';
 
 
 const program = new Command();
@@ -25,7 +25,7 @@ program
     .action(async () =>
     {
         const server = express();
-        const js_manager = await new JSManager().buildAsync()
+        const pluginManager = await new PluginManager().buildAsync()
 
         // Load all Middlewares
         server.use(cors({ origin: '*', optionsSuccessStatus: 200 }));
@@ -33,7 +33,7 @@ program
         server.use('/', (await import('../src/routes/serve')).default);
 
         // Load all JS written plugin in memory
-        await js_manager.loadAll(server);
+        await pluginManager.loadAll(server);
 
         // TODO: Python compatible plugin
         //
@@ -65,7 +65,7 @@ program
             // Plugin
             console.log('\n');
             console.log('\x1b[43m\x1b[30m%s\x1b[0m', '🔌 Loading available plugins...');
-            for (const plugin of js_manager.getPluginList()) {
+            for (const plugin of pluginManager.getPluginList()) {
                 console.log('\x1b[30m\x1b[1m%s\x1b[0m', `✅ ${plugin.name} is enabled!`);
             }
         });
@@ -78,7 +78,7 @@ program
     .action(async () =>
     {
         const server = express();
-        const js_manager = await new JSManager().buildAsync()
+        const pluginManager = await new PluginManager().buildAsync()
 
         // Load all Middlewares
         server.use(cors({ origin: '*', optionsSuccessStatus: 200 }));
@@ -86,7 +86,7 @@ program
         server.use('/', (await import('../src/routes/serve')).default);
 
         // Load all JS written plugin in memory
-        await js_manager.loadAll(server);
+        await pluginManager.loadAll(server);
 
         // TODO: Python compatible plugin
         //
@@ -122,7 +122,7 @@ program
             // Plugin
             console.log('\n');
             console.log('\x1b[43m\x1b[30m%s\x1b[0m', '🔌 Loading available plugins...');
-            for (const plugin of js_manager.getPluginList()) {
+            for (const plugin of pluginManager.getPluginList()) {
                 console.log('\x1b[30m\x1b[1m%s\x1b[0m', `✅ ${plugin.name} is enabled!`);
             }
         });
