@@ -15,9 +15,8 @@ export default function MysqlTable({ table, exportBtn }: {
         <div>
             {
                 table === 'users' ? <UsersTable /> :
-                    table === 'movies' ? <MoviesTable /> :
-                        // Default
-                        <Table table={table} exportBtn={exportBtn} />
+                    // Default
+                    <Table table={table} exportBtn={exportBtn} />
             }
 
         </div>
@@ -116,7 +115,7 @@ function Table({ table, exportBtn }) {
 
     return (
         <>
-            <div className="relative h-[50vh] xl:h-[65vh] 2xl:h-[70vh] overflow-x-auto shadow-md sm:rounded-lg">
+            <div className="relative h-[50vh] xl:h-[65vh] 2xl:h-[70vh] overflow-x-auto shadow-md sm:rounded-lg bg-white">
                 <table className="relative w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="sticky top-0 text-xs text-gray-700 uppercase bg-neutral-100 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -138,6 +137,7 @@ function Table({ table, exportBtn }) {
                             </th>
                             {
                                 columns?.map((col, index) => {
+                                    if (index < 8)
                                     return (
                                         <th key={index} scope="col" className="px-6 py-4">
                                             {col.Field}
@@ -167,12 +167,13 @@ function Table({ table, exportBtn }) {
                                             </div>
                                         </td>
                                         <td className="w-4 h-4 text-center text-gray-950">
-                                            { index + 1 }
+                                            {index + 1}
                                         </td>
                                         {
                                             Object.values(row).map((item: any, index: number) => {
+                                                if (index < 8)
                                                 return (
-                                                    <td key={index} className="px-6 py-4">{ item }</td>
+                                                    <td key={index} className="px-6 py-4">{truncateWithEllipsis(typeof item === 'string' ? item : item.toString(), columns?.length! > 7 ? 15 : 20)}</td>
                                                 )
                                             })
                                         }

@@ -19,11 +19,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             </head>
             <body className="antialiased">
-                <div className="min-h-screen overflow-hidden">
-                    <Providers>
-                        { children }
-                    </Providers>
-                </div>
+                <Providers>
+                    {children}
+                </Providers>
             </body>
         </html>
     );

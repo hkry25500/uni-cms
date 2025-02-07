@@ -140,7 +140,7 @@ export default function ExplorerPage({ dirpath }: any) {
                     </ol>
                 </nav>
 
-                <div className="lg:max-w-screen-2xl xl:max-w-full lg:mx-auto mt-10 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-8 justify-items-center overflow-hidden">
+                <div className="lg:max-w-screen-2xl xl:max-w-full lg:mx-auto mt-5 md:mt-10 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-8 justify-items-center overflow-hidden">
                     {
                         contents.map((content: any) => {
                             if (content.type === 'directory') {

@@ -9,7 +9,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     return (
         <>
             <ToastProvider>
-                <div className="flex flex-row min-h-screen">
+                <div className="flex flex-row w-screen h-screen overflow-x-auto overflow-y-hidden xl:overflow-hidden">
                     <Header />
                     <Sidebar />
                     <main className="w-full pt-16 md:pt-0 min-h-screen">

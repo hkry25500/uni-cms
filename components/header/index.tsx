@@ -32,7 +32,7 @@ export default function Header() {
                 </nav>
             </header>
 
-            <div id="drawer-left-example" className={`fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform ${isDrawerOpen ? 'transform-none' : '-translate-x-full'} bg-white w-full max-w-96 dark:bg-gray-800`} tabIndex={1} aria-labelledby="drawer-left-label">
+            <div id="drawer-left-example" className={`fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform ${isDrawerOpen ? 'transform-none' : '-translate-x-full'} bg-white w-full max-w-[460px] dark:bg-gray-800`} tabIndex={1} aria-labelledby="drawer-left-label">
                 {/* <h5 id="drawer-left-label" className="inline-flex items-center mb-4 text-base font-semibold text-gray-500 dark:text-gray-400"><svg className="w-4 h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
                 </svg>Left drawer</h5> */}
