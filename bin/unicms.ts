@@ -11,9 +11,10 @@ import { PluginManager } from '@/lib/plugin';
 
 
 const program = new Command();
+const pluginManager = new PluginManager();
 
-const address: string = process.env.HOST_ADDR || "127.0.0.1";
-const port: number = Number.parseInt(process.env.HOST_PORT || "8080");
+const address: string = env.HOST_ADDR || "127.0.0.1";
+const port: number = Number.parseInt(env.HOST_PORT || "8080");
 
 program
     .version("0.3.1")
@@ -25,7 +26,7 @@ program
     .action(async () =>
     {
         const server = express();
-        const pluginManager = await new PluginManager().buildAsync()
+        await pluginManager.buildAsync();
 
         // Load all Middlewares
         server.use(cors({ origin: '*', optionsSuccessStatus: 200 }));
@@ -78,7 +79,7 @@ program
     .action(async () =>
     {
         const server = express();
-        const pluginManager = await new PluginManager().buildAsync()
+        await pluginManager.buildAsync();
 
         // Load all Middlewares
         server.use(cors({ origin: '*', optionsSuccessStatus: 200 }));

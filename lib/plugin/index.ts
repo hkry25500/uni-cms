@@ -5,7 +5,7 @@ import fs from 'fs-extra';
 export class PluginManager
 {
     protected plugins: Map<string, JSPlugin> = new Map();
-    protected pathToPlugins!: string;
+    protected pluginsDirPath!: string;
 
 
     public async load(key: string)
@@ -29,7 +29,7 @@ export class PluginManager
         }
     }
 
-    public getPlugin(plugin: string)
+    public getPlugin(plugin: string): JSPlugin | undefined
     {
         return this.plugins.get(plugin);
     }
@@ -45,26 +45,30 @@ export class PluginManager
 
     public async buildAsync()
     {
-        this.pathToPlugins = path.join(process.cwd(), "plugins");
+        this.pluginsDirPath = path.join(process.cwd(), "plugins");
 
-        await fs.readdir(this.pathToPlugins)
+        await fs.ensureDir(this.pluginsDirPath);
+
+        await fs.readdir(this.pluginsDirPath)
             .then(async dirnames =>
             {
                 for (const dirname of dirnames)
                 {
-                    const path_to_plugin_dir = path.join(this.pathToPlugins, dirname);
-                    const stat = await fs.stat(path_to_plugin_dir);
+                    const pluginDirPath = path.join(this.pluginsDirPath, dirname);
+                    const stat = await fs.stat(pluginDirPath);
 
                     if (stat.isDirectory())
                     {
-                        const path_to_plugin_entry = path.join(path_to_plugin_dir, 'entry.mjs');
-                        const module = await import(this.convertToFileURL(path_to_plugin_entry));
+                        const pluginEntryFilePath = path.join(pluginDirPath, 'entry.mjs');
+                        const module = await import(this.convertToFileURL(pluginEntryFilePath));
+                        const pluginName = module.metadata.name || dirname;
+
                         this.plugins.set(
-                            dirname,
+                            pluginName,
                             {
-                                name: module.metadata.name || dirname,
-                                dirPath: path_to_plugin_dir,
-                                entryPath: path_to_plugin_entry,
+                                name: pluginName,
+                                dirPath: pluginDirPath,
+                                entryPath: pluginEntryFilePath,
                                 metadata: module.metadata,
                                 module: module,
                             }
