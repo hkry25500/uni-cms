@@ -19,7 +19,7 @@ export default function Workspace({ table }) {
 
     useEffect(() => {
         if (table) {
-            fetch(`/api/utils/db/showColumnsFrom?args_0=${table}`)
+            fetch(`/api/util/db/showColumnsFrom?args_0=${table}`)
                 .then(res => {
                     if (res.ok)
                         return res.json();

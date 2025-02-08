@@ -28,7 +28,7 @@ export default function Page() {
 
     useEffect(() => {
         if (!tables)
-            fetch('/api/utils/db/showTables')
+            fetch('/api/util/db/showTables')
                 .then(res => {
                     if (res.ok)
                         return res.json();

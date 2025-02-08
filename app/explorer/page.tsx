@@ -54,7 +54,7 @@ export default function ExplorerPage({ dirpath }: any) {
 
     async function fetchContents(_dirpath: string) {
         try {
-            const response = await fetch('/api/utils/io/fetchDir?args_0=' + _dirpath);
+            const response = await fetch('/api/util/io/fetchDir?args_0=' + _dirpath);
             const data = await response.json();
             setContents(data);
         } catch (error) {

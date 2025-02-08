@@ -34,7 +34,7 @@ function Table({ table, exportBtn }) {
 
     useEffect(() => {
         if (table)
-            fetch(`/api/utils/db/showColumnsFrom?args_0=${table}`)
+            fetch(`/api/util/db/showColumnsFrom?args_0=${table}`)
                 .then(res => {
                     if (res.ok)
                         return res.json();
@@ -46,7 +46,7 @@ function Table({ table, exportBtn }) {
 
     useEffect(() => {
         if (table)
-            fetch(`/api/utils/db/selectFrom?args_0=${table}`)
+            fetch(`/api/util/db/selectFrom?args_0=${table}`)
                 .then(res => {
                     if (res.ok)
                         return res.json();
@@ -197,7 +197,7 @@ function UsersTable() {
 
 
     useEffect(() => {
-        fetch('/api/utils/db/getUsersTableColumns')
+        fetch('/api/util/db/getUsersTableColumns')
             .then(res => {
                 if (res.ok)
                     return res.json();
@@ -222,7 +222,7 @@ function UsersTable() {
 
 
     function fetchUsers() {
-        fetch('/api/utils/db/getUsers')
+        fetch('/api/util/db/getUsers')
             .then(res => {
                 if (res.ok) {
                     return res.json();
@@ -246,7 +246,7 @@ function UsersTable() {
     function submitUserUpdate() {
         const formatObj = { ...userEditing };
         delete formatObj.avatar;
-        fetch(`/api/utils/db/updateUser?args_0=${userEditing.uid}&args_1=${JSON.stringify(formatObj)}`)
+        fetch(`/api/util/db/updateUser?args_0=${userEditing.uid}&args_1=${JSON.stringify(formatObj)}`)
             .finally(() => {
                 setEditModal(false);
                 setUserEditing(null);
@@ -513,7 +513,7 @@ function MoviesTable() {
 
 
     useEffect(() => {
-        fetch('/api/utils/db/getMoviesTableColumns')
+        fetch('/api/util/db/getMoviesTableColumns')
             .then(res => {
                 if (res.ok)
                     return res.json();
@@ -524,7 +524,7 @@ function MoviesTable() {
     }, []);
 
     useEffect(() => {
-        fetch('/api/utils/db/getMovies')
+        fetch('/api/util/db/getMovies')
             .then(res => {
                 if (res.ok)
                     return res.json();
