@@ -35,6 +35,9 @@ export default function Page() {
                         <div className="h-20 p-6">
                             <h2 className={`text-xl font-bold ${inter.className} tracking-tighter text-neutral-800`}>Interfaces</h2>
                         </div>
+                        <div className="mb-2 px-6">
+                                <h2 className={`text-xs font-semibold ${inter.className} tracking-tighter uppercase text-neutral-400`}>Collections ({tables?.length || 0})</h2>
+                            </div>
                         <nav
                             aria-label="Main"
                             className="flex flex-col h-full"
