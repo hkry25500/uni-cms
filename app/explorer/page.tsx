@@ -13,7 +13,8 @@ export default function ExplorerPage({ dirpath }: any) {
     const [currentPath, setCurrentPath] = useState(dirpath);
     const [pathSegments, setPathSegments] = useState<string[]>();
     const [contextMenu, setContextMenu] = useState<{ x: number; y: number; isVisible: boolean }>({ x: 0, y: 0, isVisible: false });
-    const [inEditing, setInEditing] = useState(false);
+    const [isFolderEditing, setIsFolderEditing] = useState(false);
+    const [isFileEditing, setIsFileEditing] = useState(false);
     const [scrollTop, setScrollTop] = useState(0);
     const scrollArea = useRef<HTMLDivElement>(null);
 
@@ -72,13 +73,9 @@ export default function ExplorerPage({ dirpath }: any) {
         setContextMenu({ x: event.clientX, y: event.clientY, isVisible: true });
     };
 
-    const closeContextMenu = () => {
-        setContextMenu(prev => ({ ...prev, isVisible: false }));
-    };
+    const closeContextMenu = () => setContextMenu(prev => ({ ...prev, isVisible: false }));
 
     const handleRefresh = () => fetchContents(currentPath);
-
-    const handleNewFolder = () => setInEditing(true);
 
     const onScroll = (e: React.UIEvent<HTMLDivElement>) => {
         console.log(e.currentTarget.scrollTop)
@@ -175,12 +172,13 @@ export default function ExplorerPage({ dirpath }: any) {
                         })
                     }
                     {
-                        inEditing ?
+                        isFolderEditing ?
                             <>
                                 <ItemInEdit
+                                    type='folder'
                                     defaultValue="New Folder"
                                     onEnter={(str) => {
-                                        setInEditing(false);
+                                        setIsFolderEditing(false);
                                         fetch(`/api/path/join/${currentPath}/${str}`)
                                             .then(res => {
                                                 if (res.ok)
@@ -196,7 +194,37 @@ export default function ExplorerPage({ dirpath }: any) {
                                             });
                                     }}
                                     onCancel={() => {
-                                        setInEditing(false);
+                                        setIsFolderEditing(false);
+                                    }}
+                                />
+                            </>
+                            :
+                            null
+                    }
+                    {
+                        isFileEditing ?
+                            <>
+                                <ItemInEdit
+                                    type='file'
+                                    defaultValue="New File"
+                                    onEnter={(str) => {
+                                        setIsFileEditing(false);
+                                        fetch(`/api/path/join/${currentPath}/${str}`)
+                                            .then(res => {
+                                                if (res.ok)
+                                                    return res.json();
+                                                else
+                                                    return;
+                                            })
+                                            .then(path => {
+                                                fetch(`/api/fs/ensurefile?path=${path}`)
+                                                    .then(_res => {
+                                                        handleRefresh();
+                                                    });
+                                            });
+                                    }}
+                                    onCancel={() => {
+                                        setIsFileEditing(false);
                                     }}
                                 />
                             </>
@@ -213,7 +241,8 @@ export default function ExplorerPage({ dirpath }: any) {
                     isVisible={contextMenu.isVisible}
                     onClose={closeContextMenu}
                     onRefresh={handleRefresh}
-                    onNewFolder={handleNewFolder}
+                    onNewFile={() => setIsFileEditing(true)}
+                    onNewFolder={() => setIsFolderEditing(true)}
                 />
 
             </div>
@@ -222,12 +251,13 @@ export default function ExplorerPage({ dirpath }: any) {
 }
 
 
-function ContextMenu({ x, y, isVisible, onClose, onRefresh, onNewFolder }: {
+function ContextMenu({ x, y, isVisible, onClose, onRefresh, onNewFile, onNewFolder }: {
     x: number;
     y: number;
     isVisible: boolean;
     onClose: () => void;
     onRefresh: () => void;
+    onNewFile: () => void;
     onNewFolder: () => void;
 }) {
     const [isCreateSubMenuOpen, setIsCreateSubMenuOpen] = useState(false);
@@ -308,11 +338,34 @@ function ContextMenu({ x, y, isVisible, onClose, onRefresh, onNewFolder }: {
                             </div>
                         </div>
                         <div
-                            className={`${!isCreateSubMenuOpen ? 'hidden ' : ''}absolute translate-x-[205px] left-auto bottom-0 right-0 flex flex-col rounded-lg bg-white shadow-sm border border-slate-200`}
+                            className={`${!isCreateSubMenuOpen ? 'hidden ' : ''}absolute translate-x-[205px] translate-y-10 left-auto bottom-0 right-0 flex flex-col rounded-lg bg-white shadow-sm border border-slate-200`}
                             onMouseEnter={() => setIsMouseStillOnSubMenu(true)}
                             onMouseLeave={() => setIsMouseStillOnSubMenu(false)}
                         >
                             <nav className="relative flex w-[200px] flex-col gap-1 p-1.5">
+                                <div
+                                    role="button"
+                                    className="flex w-full pl-3 items-center rounded-md transition-all text-sm text-slate-800 hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100"
+                                    onClick={() => {
+                                        handleOnClose();
+                                        onNewFile();
+                                    }}
+                                >
+                                    New File...
+                                    <div className="ml-auto grid place-items-center justify-self-end">
+                                        <div
+                                            className="p-2 text-center text-sm transition-all text-slate-600 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 24 24"
+                                                fill="currentColor"
+                                                className="w-4 h-4"
+                                            >
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div
                                     role="button"
                                     className="flex w-full pl-3 items-center rounded-md transition-all text-sm text-slate-800 hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100"

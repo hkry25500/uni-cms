@@ -30,3 +30,5 @@ type PluginData = {
 }
 type JSPlugin = PluginData & Partial<{ module: any }>
 type PythonPlugin = PluginData & Partial<{ code: string }>
+
+type FileSystemItem = 'folder' | 'file';

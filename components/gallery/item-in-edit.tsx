@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
 
-export default function ItemInEdit({ defaultValue, onEnter, onCancel }: {
+export default function ItemInEdit({ type, defaultValue, onEnter, onCancel }: {
+    type: FileSystemItem;
     defaultValue: string;
     onEnter: (str: string) => void;
     onCancel: () => void;
