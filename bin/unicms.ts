@@ -8,11 +8,11 @@ import cors from 'cors'
 import next from 'next';
 import { exec } from 'child_process';
 import { PluginManager } from '@/lib/plugin';
+import { singleton } from '@/lib/lifecycle';
 
 
 const program = new Command();
-const pluginManager = new PluginManager();
-
+const pluginManager = singleton('plugin', () => new PluginManager());
 const address: string = env.HOST_ADDR || "127.0.0.1";
 const port: number = Number.parseInt(env.HOST_PORT || "8080");
 
