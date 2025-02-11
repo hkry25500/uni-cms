@@ -26,7 +26,7 @@ type PluginData = {
     name: string;
     dirPath: string;
     entryPath: string;
-    metadata?: Partial<{ name: string; description: string; version: string; author: string; }>
+    metadata: Partial<{ name: string; description: string; version: string; author: string; icon: string; }>
 }
 type JSPlugin = PluginData & Partial<{ module: any }>
 type PythonPlugin = PluginData & Partial<{ code: string }>

@@ -63,7 +63,7 @@ export default function Page() {
 
             <div className="grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 mt-10 gap-x-6 gap-y-20">
 
-                <PluginCard name="Minecraft" description="A uniCMS extension to host Minecraft server" icon="https://pngimg.com/uploads/minecraft/minecraft_PNG74.png" />
+                {/* <PluginCard name="Minecraft" description="A uniCMS extension to host Minecraft server" icon="https://pngimg.com/uploads/minecraft/minecraft_PNG74.png" /> */}
 
             </div>
         </>
