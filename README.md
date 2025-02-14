@@ -36,7 +36,7 @@ Uni-CMS is a simple and easy-to-use Content Management System (CMS) designed to 
 
 ## Usage
 
-1. Modified .env file for Application setups:
+1. Modify .env file for Application setups:
     <br>
 2. Start the development server:
     ```bash
