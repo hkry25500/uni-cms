@@ -5,10 +5,10 @@ import Providers from './providers';
 
 export const metadata: Metadata = {
     title: {
-        template: '%s - uniCMS',
-        default: 'uniCMS',
+        template: '%s - UniCMS',
+        default: 'UniCMS - Open Source Node.js Headless CMS 🚀',
     },
-    description: 'uniCMS is a content management system for managing your content.',
+    description: 'UniCMS is a content management system for managing your content.',
     icons: {
         icon: '/favicon.svg'
     }

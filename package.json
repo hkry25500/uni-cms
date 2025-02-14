@@ -1,7 +1,7 @@
 {
   "name": "uni-cms",
   "version": "0.3.1",
-  "description": "uniCMS is a universal Content Management System developed by UC Berkeley EECS and UniJS team.",
+  "description": "UniCMS is a universal Content Management System developed by UC Berkeley EECS and UniJS team.",
   "bin": {
     "unicms": "./dist/bundle.cjs"
   },

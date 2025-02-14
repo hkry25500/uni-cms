@@ -21,7 +21,7 @@ export default function Layout({ children }) {
 
                 <div>
                     <h1 className="text-3xl font-semibold">Marketplace</h1>
-                    <p className="mt-2 text-base text-gray-500">Download extension plugin for uniCMS</p>
+                    <p className="mt-2 text-base text-gray-500">Download extension plugin for UniCMS</p>
                 </div>
 
                 <div className="mt-10">

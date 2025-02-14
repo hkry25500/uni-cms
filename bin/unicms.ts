@@ -18,11 +18,11 @@ const port: number = Number.parseInt(env.HOST_PORT || "8080");
 
 program
     .version("0.3.1")
-    .description("uniCMS is a universal Content Management System developed by UC Berkeley EECS and UniJS team.");
+    .description("UniCMS is a universal Content Management System developed by UC Berkeley EECS and UniJS team.");
 
 program
     .command("start")
-    .description("Launch uniCMS in production-ready HTTP server")
+    .description("Launch UniCMS in production-ready HTTP server")
     .action(async () =>
     {
         const server = express();
@@ -53,7 +53,7 @@ program
 
         server.listen(port, address, () => {
             console.log();
-            console.log('\x1b[43m\x1b[30m%s\x1b[0m', '🚀 uniCMS server is running!');
+            console.log('\x1b[43m\x1b[30m%s\x1b[0m', '🚀 UniCMS server is running!');
             console.log('\x1b[42m\x1b[30m%s\x1b[0m', '🟢 PRODUCTION MODE');
             console.log('\n');
             console.log('\x1b[33m\x1b[1m%s\x1b[0m', `📦 Content directory: \x1b[0m\x1b[33m${env.CONTENT_DIR_PATH}`);
@@ -75,7 +75,7 @@ program
 
 program
     .command("dev")
-    .description("Launch uniCMS in development HMR server")
+    .description("Launch UniCMS in development HMR server")
     .action(async () =>
     {
         const server = express();
@@ -107,7 +107,7 @@ program
         server.listen(port, address, () => {
             // Default
             console.log();
-            console.log('\x1b[43m\x1b[30m%s\x1b[0m', '🚀 uniCMS server is running!');
+            console.log('\x1b[43m\x1b[30m%s\x1b[0m', '🚀 UniCMS server is running!');
             console.log('\x1b[41m\x1b[37m%s\x1b[0m', '🔴 DEV ONLY, DO NOT USE THIS IN PRODUCTION!');
             console.log();
             console.log('Learn more: \x1b[36mhttps://learn.microsoft.com/en-us/unicms/\x1b[0m');
@@ -132,7 +132,7 @@ program
 
 program
     .command("build")
-    .description("Create optimized, high-performance build of uniCMS.")
+    .description("Create optimized, high-performance build of UniCMS.")
     .action(async () =>
     {
         const cwd = process.cwd();
