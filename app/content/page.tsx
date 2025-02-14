@@ -49,7 +49,7 @@ export default function Page() {
                                         return (
                                             <div
                                                 key={index}
-                                                className={`${selectedTable === table.name ? 'flex items-center px-4 py-3 w-full space-x-2 cursor-pointer text-yellow-600 bg-neutral-100 border-r-2 border-yellow-400' : 'flex items-center px-4 py-3 space-x-2 cursor-pointer text-neutral-800 transition-colors hover:bg-neutral-100'}`}
+                                                className={`${selectedTable === table.name ? 'flex items-center px-4 py-3 w-full space-x-2 cursor-pointer text-blue-600 bg-neutral-100 border-r-2 border-blue-600' : 'flex items-center px-4 py-3 space-x-2 cursor-pointer text-neutral-800 transition-colors hover:bg-neutral-100'}`}
                                                 onClick={() => setSelectedTable(table.name)}
                                             >
                                                 <span className="ms-8"><span className="me-2.5">•</span>{withUpperCase(table.name)}</span>
@@ -67,11 +67,11 @@ export default function Page() {
                         !selectedTable ? null :
                             <>
                                 <div
-                                    className="inline-flex flex-row items-center gap-1.5 -ml-2 px-4 py-2 text-yellow-600 hover:bg-neutral-100 rounded-lg cursor-pointer"
-                                    onClick={() => setSelectedTable(undefined)}
+                                    className="inline-flex flex-row items-center gap-1.5 -ml-2 px-4 py-2 text-blue-600 hover:bg-neutral-100 rounded-lg cursor-pointer"
+                                    onClick={() => setSelectedTable(void 0)}
                                 >
                                     <svg
-                                        className="w-6 h-6 text-yellow-600"
+                                        className="w-6 h-6 text-blue-600"
                                         aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"

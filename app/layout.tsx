@@ -9,6 +9,9 @@ export const metadata: Metadata = {
         default: 'uniCMS',
     },
     description: 'uniCMS is a content management system for managing your content.',
+    icons: {
+        icon: '/favicon.svg'
+    }
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>)
