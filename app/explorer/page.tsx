@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import ItemInEdit from "@/components/gallery/item-in-edit";
 import ItemFile from "@/components/gallery/item-file";
 import NavToTop from "@/components/buttons/nav-to-top";
+import ContextMenu from "@/components/context-menu";
 
 
 export default function ExplorerPage({ dirpath }: any) {
@@ -33,25 +34,6 @@ export default function ExplorerPage({ dirpath }: any) {
         }
     }, [currentPath]);
 
-    useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.key === 'Backspace' && !isFolderEditing && !isFileEditing && pathSegments && pathSegments.length > 0) {
-                fetch(`/api/path/join/${dirpath}/${pathSegments.slice(0, pathSegments.length - 1).join('/')}`)
-                    .then(res => {
-                        if (res.ok)
-                            return res.json();
-                    })
-                    .then(path => {
-                        handleDirectoryChange(path);
-                    });
-            }
-        }
-
-        window.addEventListener('keydown', handleKeyDown);
-
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [pathSegments, isFolderEditing, isFileEditing]);
-
 
     async function fetchContents(_dirpath: string) {
         try {
@@ -68,7 +50,7 @@ export default function ExplorerPage({ dirpath }: any) {
         setCurrentPath(_dirpath);
     }
 
-    const handleRightClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    const showContextMenu = (event: React.MouseEvent<HTMLDivElement>) => {
         event.preventDefault();
         setContextMenu({ x: event.clientX, y: event.clientY, isVisible: true });
     };
@@ -76,6 +58,16 @@ export default function ExplorerPage({ dirpath }: any) {
     const closeContextMenu = () => setContextMenu(prev => ({ ...prev, isVisible: false }));
 
     const handleRefresh = () => fetchContents(currentPath);
+
+    const handleNewFile = () => {
+        closeContextMenu();
+        setIsFileEditing(true);
+    };
+
+    const handleNewFolder = () => {
+        closeContextMenu();
+        setIsFolderEditing(true);
+    };
 
     const onScroll = (e: React.UIEvent<HTMLDivElement>) => {
         console.log(e.currentTarget.scrollTop)
@@ -93,7 +85,7 @@ export default function ExplorerPage({ dirpath }: any) {
             <div
                 ref={scrollArea}
                 className="h-screen px-6 py-6 bg-neutral-50 overflow-y-scroll"
-                onContextMenu={handleRightClick}
+                onContextMenu={showContextMenu}
                 onScroll={onScroll}
             >
 
@@ -238,161 +230,29 @@ export default function ExplorerPage({ dirpath }: any) {
                 <ContextMenu
                     x={contextMenu.x}
                     y={contextMenu.y}
-                    isVisible={contextMenu.isVisible}
+                    visible={contextMenu.isVisible}
+                    items={[
+                        {
+                            label: "Refresh",
+                            action: handleRefresh
+                        },
+                        {
+                            label: "Create",
+                            children: [
+                                {
+                                    label: "New File...",
+                                    action: handleNewFile
+                                },
+                                {
+                                    label: "New Folder...",
+                                    action: handleNewFolder
+                                }
+                            ]
+                        }
+                    ]}
                     onClose={closeContextMenu}
-                    onRefresh={handleRefresh}
-                    onNewFile={() => setIsFileEditing(true)}
-                    onNewFolder={() => setIsFolderEditing(true)}
                 />
 
-            </div>
-        </>
-    )
-}
-
-
-function ContextMenu({ x, y, isVisible, onClose, onRefresh, onNewFile, onNewFolder }: {
-    x: number;
-    y: number;
-    isVisible: boolean;
-    onClose: () => void;
-    onRefresh: () => void;
-    onNewFile: () => void;
-    onNewFolder: () => void;
-}) {
-    const [isCreateSubMenuOpen, setIsCreateSubMenuOpen] = useState(false);
-    const [isMouseStillOnSubMenu, setIsMouseStillOnSubMenu] = useState(false);
-
-    useEffect(() => {
-        if (!isMouseStillOnSubMenu)
-            setIsCreateSubMenuOpen(false);
-    }, [isMouseStillOnSubMenu]);
-
-    const handleOnClose = () => {
-        setIsCreateSubMenuOpen(false);
-        onClose();
-    }
-
-    return (
-        <>
-            {/* 透明遮罩层 */}
-            <div className={`${!isVisible ? 'hidden ' : ''}fixed inset-0 z-40`} onClick={handleOnClose}></div>
-            <div
-                className={`${!isVisible ? 'hidden ' : ''}absolute z-50 flex flex-col rounded-lg bg-white shadow-sm border border-slate-200`}
-                style={{
-                    left: x,
-                    top: y
-                }}
-            >
-                <nav className="relative flex w-[200px] flex-col gap-1 p-1.5">
-                    <div
-                        role="button"
-                        className="flex w-full pl-3 items-center rounded-md transition-all text-sm text-slate-800 hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100"
-                        onClick={() => {
-                            handleOnClose();
-                            onRefresh();
-                        }}
-                    >
-                        Refresh
-                        <div className="ml-auto grid place-items-center justify-self-end">
-                            <div
-                                className="p-2 text-center text-sm transition-all text-slate-600 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="currentColor"
-                                    className="w-4 h-4"
-                                >
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        role="button"
-                        className="flex w-full pl-3 items-center rounded-md transition-all text-sm text-slate-800 hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100"
-                        onMouseEnter={() => setIsCreateSubMenuOpen(true)}
-                    >
-                        Create
-                        <div className="ml-auto grid place-items-center justify-self-end">
-                            <div
-                                className="p-2 text-center text-sm transition-all text-slate-600 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                            >
-                                <svg
-                                    className="w-4 h-4 text-gray-800 dark:text-white"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width={24}
-                                    height={24}
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke="currentColor"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="1.5"
-                                        d="m9 5 7 7-7 7"
-                                    />
-                                </svg>
-                            </div>
-                        </div>
-                        <div
-                            className={`${!isCreateSubMenuOpen ? 'hidden ' : ''}absolute translate-x-[205px] translate-y-10 left-auto bottom-0 right-0 flex flex-col rounded-lg bg-white shadow-sm border border-slate-200`}
-                            onMouseEnter={() => setIsMouseStillOnSubMenu(true)}
-                            onMouseLeave={() => setIsMouseStillOnSubMenu(false)}
-                        >
-                            <nav className="relative flex w-[200px] flex-col gap-1 p-1.5">
-                                <div
-                                    role="button"
-                                    className="flex w-full pl-3 items-center rounded-md transition-all text-sm text-slate-800 hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100"
-                                    onClick={() => {
-                                        handleOnClose();
-                                        onNewFile();
-                                    }}
-                                >
-                                    New File...
-                                    <div className="ml-auto grid place-items-center justify-self-end">
-                                        <div
-                                            className="p-2 text-center text-sm transition-all text-slate-600 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                                        >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24"
-                                                fill="currentColor"
-                                                className="w-4 h-4"
-                                            >
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    role="button"
-                                    className="flex w-full pl-3 items-center rounded-md transition-all text-sm text-slate-800 hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100"
-                                    onClick={() => {
-                                        handleOnClose();
-                                        onNewFolder();
-                                    }}
-                                >
-                                    New Folder...
-                                    <div className="ml-auto grid place-items-center justify-self-end">
-                                        <div
-                                            className="p-2 text-center text-sm transition-all text-slate-600 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                                        >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24"
-                                                fill="currentColor"
-                                                className="w-4 h-4"
-                                            >
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            </nav>
-                        </div>
-                    </div>
-                </nav>
             </div>
         </>
     )
