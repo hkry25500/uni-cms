@@ -1,8 +1,6 @@
-# Uni-CMS
+# UniCMS
 
-Uni-CMS is a simple and easy-to-use Content Management System (CMS) designed to help users quickly build and manage website content.
-
-## Table of Contents
+UniCMS is a simple and easy-to-use Content Management System (CMS) designed to help users quickly build and manage website content.
 
 - [Installation](#installation)
 - [Usage](#usage)
@@ -15,7 +13,7 @@ Uni-CMS is a simple and easy-to-use Content Management System (CMS) designed to 
 
 1. Clone the repository to your local machine:
     ```bash
-    git clone https://github.com/yourusername/uni-cms.git
+    git clone https://github.com/UniJS/unicms.git
     ```
 2. Navigate to the project directory:
     ```bash
@@ -46,14 +44,11 @@ Uni-CMS is a simple and easy-to-use Content Management System (CMS) designed to 
 
 ## Deploy
 
-> *Recommand for production-ready*
+> *Recommend for production-ready*
 
 * **Node.js**
-    1.Open the Termial
-    2.Start the production server:
-    ```bash
-    unicms start
-    ```
+    - [Installation](#installation)
+    - [Usage](#usage)
 <br>
 
 * **Vercel**
