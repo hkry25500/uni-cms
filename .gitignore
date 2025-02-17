@@ -1,4 +1,6 @@
 # UniCMS
+.unicms/
+/content
 /plugins
 *.test.*
 
