@@ -1,5 +1,6 @@
 # UniCMS
 .unicms/
+/config/**/*.json
 /content
 /plugins
 *.test.*
