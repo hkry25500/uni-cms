@@ -30,5 +30,11 @@ type PluginData = {
 }
 type JSPlugin = PluginData & Partial<{ module: any }>
 type PythonPlugin = PluginData & Partial<{ code: string }>
-
 type FileSystemItem = 'folder' | 'file';
+type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+type Route = {
+    method: RequestMethod;
+    path: string;
+    event: string;
+}
+type BooleanChar = 'true' | 'false';

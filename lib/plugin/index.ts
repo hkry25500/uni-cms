@@ -1,5 +1,6 @@
 import path from "path";
 import fs from 'fs-extra';
+import { convertToFileURL } from "../util/fs";
 
 
 export class PluginManager
@@ -47,7 +48,9 @@ export class PluginManager
     {
         this.pluginsDirPath = path.join(process.cwd(), "plugins");
 
-        await fs.ensureDir(this.pluginsDirPath);
+        if (!await fs.exists(this.pluginsDirPath)) {
+            return this;
+        }
 
         await fs.readdir(this.pluginsDirPath)
             .then(async dirnames =>
@@ -60,7 +63,7 @@ export class PluginManager
                     if (stat.isDirectory())
                     {
                         const pluginEntryFilePath = path.join(pluginDirPath, 'entry.mjs');
-                        const module = await import(this.convertToFileURL(pluginEntryFilePath));
+                        const module = await import(convertToFileURL(pluginEntryFilePath));
                         const pluginName = module.metadata.name || dirname;
 
                         this.plugins.set(
@@ -78,10 +81,5 @@ export class PluginManager
             });
 
         return this;
-    }
-
-    public convertToFileURL(path: string) {
-        // 使用正则表达式匹配盘符并替换为file://
-        return path.replace(/^([a-zA-Z]):\\/, 'file:///$1:/');
     }
 }
