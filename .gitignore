@@ -1,7 +1,7 @@
 # UniCMS
 .unicms/
 /config/**/*.json
-/content
+/api/**/*
 /plugins
 *.test.*
 
@@ -60,3 +60,6 @@ typings/
 
 # next.js build output
 .next
+
+# VSCode
+.vscode
